@@ -8,11 +8,11 @@ This project helps manage the sales, expenses, purchases, and profits of a pharm
 - Secure login and logout functionality.
 
 ## Screenshots
-![Dashboard Screenshot](screenshots/dashboard.png)
-![Dashboard  Screenshot](screenshots/dashboard2.png)
-![Manage invoices Screenshot](screenshots/manageinvoices.png)
-![report Screenshot](screenshots/report.png)
-![Add Drug Screenshot](screenshots/add-medicine.png)
-![Add User Screenshot](screenshots/add-user.png)
-![Users Screenshot](screenshots/users.png)
-![Add Invoice Screenshot](screenshots/add_invoice.png)
+![Dashboard Screenshot](screenshot/dashboard.png)
+![Dashboard  Screenshot](screenshot/dashboard2.png)
+![Manage invoices Screenshot](screenshot/manageinvoices.png)
+![report Screenshot](screenshot/report.png)
+![Add Drug Screenshot](screenshot/add-medicine.png)
+![Add User Screenshot](screenshot/add-user.png)
+![Users Screenshot](screenshot/users.png)
+![Add Invoice Screenshot](screenshot/add_invoice.png)

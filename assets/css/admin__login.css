@@ -1,0 +1,295 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('../images/bg.jpg');
+    width: 100%;
+    height: 100vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    width: 45%;
+    height: 30rem;
+    background: #fff;
+}
+
+.container .section {
+    width: 50%;
+    height: 100%;
+    background: url('../images/loginbg.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+}
+
+.container .container__section {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+
+}
+
+.container .section .section-welcome {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.container .section h1,
+p {
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.container .section h1 {
+    font-weight: 500;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container .section p {
+    white-space: nowrap;
+    letter-spacing: 1.3px;
+    overflow: hidden;
+    display: inline-block;
+    border-right: 3px solid;
+    animation: typinganimation 4s steps(30, end),
+        blink-caret 0.75s step-end infinite;
+
+    font-size: 0.65em;
+}
+
+.container .login__section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to right, #e4edf5, #bdd9f3);
+    padding: 4rem;
+}
+
+.container .login__section .locker {
+    background: linear-gradient(to right, #3293ed, #88bff2);
+    height: 30px;
+    width: 30px;
+    padding: 5px;
+    border-radius: 50px;
+}
+
+.container .login__section h1 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 2em;
+    font-weight: 500;
+    margin: 20px;
+}
+
+@keyframes typinganimation {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes blink-caret {
+
+    from,
+    to {
+        border-color: transparent;
+    }
+
+    50% {
+        border-color: transparent;
+    }
+}
+
+
+.container .login__section form {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+}
+
+.container .container__section {
+    width: 100%;
+    height: 100%;
+}
+
+.container .login__section form input {
+    width: 100%;
+    height: 30px;
+    border: none;
+    padding: 20px;
+    /* border: 1px solid #3293ed; */
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    border-radius: 5px;
+    position: relative;
+    transition: all 0.5s linear;
+}
+
+.container .login__section form img {
+    position: absolute;
+    right: 12px;
+    align-content: center;
+    margin-top: 10px;
+}
+
+.container .login__section form input:focus {
+    outline: none;
+    border: none;
+    box-shadow: 0px 2px 2px 2px #3293ed;
+}
+
+.container .login__section form .form__input {
+    margin: 10px;
+}
+
+
+.container .login__section form a {
+    text-decoration: none;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    align-self: flex-end;
+    position: relative;
+    right: 10px;
+    color: #8a8a8a;
+    margin: 20px;
+}
+
+.container .login__section form .button__container{
+    text-align: center;
+
+}
+
+.container .login__section form button {
+    width: 95%;
+    background:  #3293ed;
+    align-self: center;
+    margin: auto;
+    cursor: pointer;
+    position: relative;
+    top: 20px;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    transition: all 0.5s linear;
+    text-align: center;
+    height: 40px;
+}
+
+
+.container .login__section form button:hover {
+    background: #1a74c9
+}
+
+.container .container__section .login__section p.error{
+    background: rgb(255, 201, 201);
+    width: 30%;
+    padding: 0.7rem;
+    color: #020D19;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    text-align: center;
+    border-radius: 5px;
+    display: none;
+    font-size: 0.68em;
+    margin: 10px 30px;
+    align-self: center;
+    border: 1px solid rgb(240, 56, 56);
+    color: rgb(240, 56, 56);
+}
+
+@media only screen and (max-width: 1500px) {
+
+    .container .container__section {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+
+    }
+
+    .container .container__section .section {
+        width: 100%;
+    }
+
+    .container .container__section .login__section {
+        width: 100%;
+    }
+
+    .container .section .section-welcome {
+        width: 100%;
+        top: 10px
+    }
+
+    .container  .section .section-welcome h1 {
+        font-size: 1.5em;
+   
+    }
+    
+
+    .container .section .section-welcome p {
+        width: 100%;
+        height: 40px;
+        white-space: nowrap;
+        letter-spacing: 1.3px;
+        overflow: hidden;
+        display: inline-block;
+        border-right: 3px solid;
+        animation: typinganimation 4s steps(30, end),
+            blink-caret 0.75s step-end infinite;
+        font-size: 10px;
+    }
+
+    @keyframes typinganimation {
+        from {
+            width: 0;
+        }
+
+        to {
+            width: 90%;
+        }
+    }
+
+    .container .container__section .login__section h1{
+        font-size: 1.5em;
+    }
+}
+

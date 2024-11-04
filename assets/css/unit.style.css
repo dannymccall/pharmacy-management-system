@@ -1,0 +1,428 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --main-bg-color: #4A89DC;
+    /* Define a global variable for background color */
+    --main-text-color: #ffffff;
+    /* Define a global variable for text color */
+    --primary-font-size: 16px;
+    /* Define a global variable for font size */
+    --primary-hover-bg-color: #1c67c9
+}
+
+html,
+body {
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    width: 100%;
+    background-color: #ececec;
+    box-sizing: border-box;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    /* background-color: rgb(33, 34, 34); */
+    width: 100%;
+    /* height: 100vh; */
+    position: relative;
+}
+
+.section {
+    width: 100%;
+    height: 100vh;
+}
+
+.container .section {
+    display: flex;
+    flex-direction: row;
+    gap: 0;
+}
+
+/* .container .header{
+    display: flex;
+    flex: row;
+    background: #fff;
+    padding: 10px;
+    box-shadow: 0px 2px 2px 2px #fff;
+} */
+
+.container .header .nav__bar .nav__bar__items .logo__div {
+    display: flex;
+    flex-direction: row;
+}
+
+.container .header .nav__bar .nav__bar__items .logo {
+    width: 50px;
+    height: 40px;
+}
+
+.container .header .nav__bar .nav__bar__items .logo__div h1 {
+    font-family: 'Roboto';
+}
+
+.container .section .body__section {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+
+}
+
+.container .section .body__section .body__header__section {
+    width: 100%;
+
+}
+
+.container .section .body__section {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+}
+
+.container .section .body__section .body__detail__container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow-y: scroll;
+
+}
+
+.container .section .body__section .body__detail__container .unit__header {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    background: #fff;
+    border-top: 1px solid #dfdddd;
+    justify-content: space-around;
+    padding: 10px;
+    align-items: center;
+}
+
+.container .section .body__section .body__detail__container .unit__header .unit {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    background: #fff;
+    gap: 15px;
+    padding: 10px;
+}
+
+.container .section .body__section .body__detail__container .unit__sub__header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.container .section .body__section .body__detail__container .unit__sub__header h1 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 500;
+    font-size: 1.2em;
+}
+
+.container .section .body__section .body__detail__container .unit__sub__header h2 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 500;
+    font-size: 0.8em;
+    color: #8d8d8d;
+    border: 2px solid #b8b8b8;
+    background: #f3f3f3;
+    width: 30%;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.container .section .body__section .body__detail__container .unit__sub__header h2 span {
+    color: #1c67c9;
+}
+
+.container .section .body__section .body__detail__container .unit__header img {
+    width: 50px;
+    height: 50px;
+}
+
+.container .section .body__section .body__detail__container .form {
+    width: 90%;
+    padding: 20px;
+    background: #fff;
+    margin: 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.container .section .body__section .body__detail__container .unit__header .add__new__unit {
+    background-color: var(--main-bg-color);
+    text-decoration: none;
+    width: 15rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    border-radius: 5px;
+    margin: 0 7.5%;
+    font-size: 0.9em;
+    gap: 15px;
+    transition: background-color 0.5s linear;
+    height: 40px;
+}
+
+.container .section .body__section .body__detail__container .unit__header .add__new__unit:hover {
+    background-color: var(--primary-hover-bg-color);
+}
+
+.container .section .body__section .body__detail__container .unit__header .add__new__unit img {
+    width: 20px;
+    height: 20px;
+}
+
+.container .section .body__section .body__detail__container .form::after {
+    content: '';
+    width: 5px;
+    height: 5px;
+    background: #4A89DC;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    border-bottom-right-radius: 50px;
+}
+
+.container .section .body__section .body__detail__container .form h1 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.1em;
+    border-bottom: 1px solid #dfdddd;
+    font-weight: 500;
+}
+
+.container .section .body__section .body__detail__container .form form {
+    width: 100%;
+    margin: 20px;
+
+}
+
+.container .section .body__section .body__detail__container .form .form-section {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin: 20px;
+
+}
+
+.container .section .body__section .body__detail__container .form label {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.8em;
+    font-weight: 500;
+}
+
+.container .section .body__section .body__detail__container .form form input,
+.container .section .body__section .body__detail__container .form form select {
+    width: 80%;
+    padding: 5px;
+    font-family: Arial, Helvetica, sans-serif;
+    border: 2px solid #b8b8b8;
+    border-radius: 5px;
+    font-size: 0.8em;
+    border: 2px solid #e6e6e6;
+    /* Default border color */
+    height: 40px;
+
+}
+
+
+/* .container .section .body__section .body__detail__container .form form input:focus {
+
+    border: 2px solid #4A89DC;
+
+
+} */
+
+.container .section .body__section .body__detail__container .form form input:focus,
+.container .section .body__section .body__detail__container .form form select:focus,
+.container .section .body__section .body__detail__container .form form textarea:focus {
+
+    border-color: #4A89DC;
+    /* Change border color when focused */
+    outline: none;
+    /* Remove the default outline */
+    /* box-shadow: 0px 2px 2px 2px #3293ed; */
+
+
+}
+
+.container .section .body__section .body__detail__container .form .form-input {
+    width: 100%;
+}
+
+.container .section .body__section .body__detail__container .form .button-section {
+    margin-left: 10px;
+    width: 100%;
+    height: 3rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.form button {
+    width: 5rem;
+    height: 35px;
+    background: #1C3A57;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.8em;
+    color: #fff;
+    border: none;
+    transition: background 0.5s linear;
+    cursor: pointer;
+
+
+}
+
+.form button:hover {
+    background: #1f65c0;
+}
+
+p.error {
+    background: rgb(255, 201, 201);
+    width: 30%;
+    padding: 0.7rem;
+    color: #020D19;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    text-align: center;
+    border-radius: 5px;
+    display: none;
+    font-size: 0.68em;
+    margin: 10px 30px;
+    align-self: center;
+    border: 1px solid rgb(240, 56, 56);
+    color: rgb(240, 56, 56);
+}
+
+.table-container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 10px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th,
+table td {
+    padding: 5px 10px;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+    font-family: Arial, Helvetica, sans-serif;
+
+}
+
+table td {
+    font-size: 0.8em;
+    padding: 10px;
+}
+
+table th {
+    background-color: #f3f3f3;
+    color: #2e2e2e;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 0.8em;
+    font-weight: 500;
+    font-weight: bold;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.edit-icon,
+table tbody tr .delete-icon,
+table tbody tr .view-icon {
+    background-color: #1c67c9;
+    height: 23px;
+    width: 23px;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 3px;
+    transform: scale(1);
+    transition: transform 0.5s linear;
+}
+
+table tbody tr .edit-icon:hover,
+table tbody tr .delete-icon:hover,
+table tbody tr .view-icon:hover {
+    transform: scale(1.2);
+}
+
+table tbody tr .delete-icon {
+    background-color: rgb(241, 46, 46);
+
+
+}
+
+table tbody tr .view-icon {
+    background-color: rgb(8, 207, 91);
+
+
+}
+
+.table-title {
+    margin-bottom: 10px;
+    font-size: 24px;
+    text-align: center;
+    color: #333;
+}
+
+.pagination {
+    margin-top: 20px;
+}
+
+.pagination-infomation {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 40rem;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 20px;
+    display: none;
+}
+
+#uploadStatus{
+    font-family: Arial, Helvetica, sans-serif; 
+    font-size:0.8em; 
+    color: #1f65c0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 5px;
+    display: none;
+}

@@ -1,0 +1,143 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+.sidebar__container {
+    width: 250px;
+    /* height: 100vh; */
+    background: #1C3A57;
+
+}
+
+.sidebar__container .sidebar__user__details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.sidebar__container .sidebar__user__details .user-credentials,
+.sidebar__container .sidebar__user__details .user-type {
+    color: #e0e0e0;
+    font-size: 0.8em;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-weight: 500;
+}
+
+.sidebar__container .sidebar__user__details .user-type {
+    color: #34eb95;
+    font-size: 0.7em;
+}
+
+.sidebar__container .sidebar__container__items .sidebar__header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #174066;
+    padding: 10px;
+}
+
+.sidebar__container .sidebar__container__items .sidebar__header img {
+    height: 70px;
+    width: 70px;
+}
+
+.sidebar__container .sidebar__container__items .sidebar__header h1 {
+    color: #e0e0e0;
+    font-size: 1em;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-weight: 500;
+}
+
+.sidebar {
+    width: 270px;
+    color: #ecf0f1;
+    height: 100vh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar .menu-item-inner-div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 12.5rem;
+    gap: 12px;
+}
+
+.menu-item {
+    padding: 15px 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #34495e;
+    transition: background-color 0.3s ease;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    width: 100%;
+}
+.menu-item:hover {
+    background: #a1c6e9;
+}
+
+.menu-item span {
+    font-size: 0.8em;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.menu-item .menu-item-inner-div img {
+    height: 16px;
+    width: 16px;
+}
+
+.menu-item:hover {
+    background-color: #577899;
+}
+
+.menu-title {
+    font-size: 18px;
+    display: block;
+}
+
+.submenu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    padding-left: 20px;
+    margin-left: 20px;
+    border-left: 3px solid #34495e;
+}
+
+.submenu a {
+    display: block;
+    text-decoration: none;
+    color: #ecf0f1;
+    padding: 3px 1px;
+    font-size: 0.67em;
+    font-family: Arial, Helvetica, sans-serif;
+    letter-spacing: 1px;
+}
+
+.submenu a:hover {
+    background-color: #174066;
+}
+
+.arrow {
+    transition: transform 0.3s ease;
+    /* Smooth rotation */
+}
+
+.rotate {
+    transform: rotate(90deg);
+    /* Rotate 90 degrees */
+}
+
+#user_image{
+    width: 100px;
+    height: 100px;
+}

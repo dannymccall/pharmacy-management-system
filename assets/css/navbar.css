@@ -1,0 +1,115 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+header {
+    background-color: #1C3A57;
+    padding: 5px;
+    display: flex;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1); /* Box shadow */
+    width: 100%;
+    z-index: 1;
+}
+
+.nav-container {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.nav-item {
+    margin: 0 15px;
+    position: relative;
+}
+
+.nav-container-assets{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+.nav-container .nav-container-assets img{
+   background: #f3f2f2;
+   cursor: pointer;
+   border: 1px solid #e0e0e0;
+   transition: background 0.5s linear;
+}
+.nav-container .nav-container-assets img:hover{
+   background: #d4d4d4;
+}
+.nav-item a {
+    color: #eeeeee;
+    text-decoration: none;
+    font-size: 1em;
+    padding: 10px 15px;
+    display: block;
+    width: 10rem;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.nav-item a:hover {
+    border-radius: 5px;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fdfdfd;
+    display: none;
+    flex-direction: column;
+    width: 200px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1); /* Box shadow */
+    color: #050505;
+    border-radius: 5px;
+}
+
+.nav-container  .nav-item .dropdown-toggle img{
+    width: 20px;
+    height: 20px;
+}
+
+.dropdown-menu a {
+    padding: 10px;
+    font-size: 0.9em;
+    color: #050505;
+    text-decoration: none;
+    width: 100%;
+}
+.dropdown-menu button {
+    background: transparent;
+    /* height: 20px; */
+    border: none;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+  text-align: start;
+}
+.dropdown-menu a:not(:last-child) {
+    border-bottom: 1px solid #cecfcf;
+}
+
+.dropdown-menu a:hover, .dropdown-menu button:hover {
+    background-color: #cecfcf;
+    width: 100%;
+}
+
+.dropdown-menu button:hover {
+    background-color: #cecfcf;
+
+}
+
+/* Arrow Rotation */
+.arrow {
+    transition: transform 0.3s ease;
+}
+
+.rotate {
+    transform: rotate(180deg); /* Rotate arrow on click */
+}

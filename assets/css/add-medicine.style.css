@@ -1,0 +1,473 @@
+.form {
+    width: 100%;
+    /* max-width: 800px;  */
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-flex {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.form-input {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 45%;
+    /* Allows each input to take up about 45% of the row */
+    min-width: 200px;
+    /* Minimum width to avoid very small inputs */
+    gap: 10px;
+    margin: 10px;
+    position: relative;
+}
+
+.form-input label {
+    margin-bottom: 5px;
+    font-size: 16px;
+    font-family: "Roboto", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.form-input input,
+.form-input select,
+.form-input textarea {
+    padding: 10px;
+    font-size: 15px;
+    border: 1px solid #f1f1f1;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+    height: 43px;
+    background: #eeeeee;
+}
+
+select:focus {
+    background-color: #e0ffe0;
+    /* Change background when focused */
+    border-color: #28a745;
+    /* Optional: change border color */
+}
+
+option:checked {
+    background-color: #add8e6;
+    /* Light blue background */
+}
+
+.button-section {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    /* Button section takes up full width */
+}
+
+.button-section button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    height: 35px;
+    width: 3rem;
+}
+
+.button-section button:hover {
+    background-color: #218838;
+}
+
+.loader__div {
+    display: none;
+    text-align: center;
+}
+
+
+.modal,
+.view-modal {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    transform: scale(0.1);
+    transition: transform 0.3s linear;
+    display: flex;
+    justify-content: center;
+    padding: 60px;
+    display: flex;
+    flex-direction: row;
+    visibility: hidden;
+}
+
+.view-modal {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    transform: scale(0.1);
+    transition: transform 0.3s linear;
+    display: flex;
+    justify-content: center;
+    padding: 60px;
+    display: flex;
+    flex-direction: row;
+    visibility: hidden;
+}
+
+.add-item-modal {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    transform: scale(0.1);
+    transition: transform 0.3s linear;
+    display: flex;
+    justify-content: center;
+    padding: 60px;
+    display: flex;
+    flex-direction: row;
+    visibility: hidden;
+}
+
+.user-view-modal {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    transform: scale(0.1);
+    transition: transform 0.3s linear;
+    display: flex;
+    justify-content: center;
+    padding: 60px;
+    display: flex;
+    flex-direction: row;
+    visibility: hidden;
+}
+
+/* .view-modal{
+    visibility: visible;
+    background-color: red;
+} */
+.open-modal,
+.open-view-modal,
+.open-add-item-modal,
+.open-user-view-modal {
+    transform: scale(1);
+    visibility: visible;
+}
+
+
+
+.modal .close {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background: #f5f5f5;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 1.2em;
+    color: #666666;
+    transition: color 0.5s linear;
+    left: 100px;
+}
+
+.view-modal .close {
+    width: 25px;
+    height: 25px;
+    background: #eeeeee;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 1.2em;
+    color: #666666;
+    transition: color 0.5s linear;
+}
+
+.user-view-modal .close {
+    width: 25px;
+    height: 25px;
+    background: #eeeeee;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 1.2em;
+    color: #666666;
+    transition: color 0.5s linear;
+    cursor: pointer;
+}
+
+.modal .close:hover {
+    color: #0C0C0C;
+}
+
+
+.modal .form form label {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.8em;
+}
+
+.add-item-modal .form form label,
+.user-view-modal .form form label {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.8em;
+    font-weight: 500;
+}
+
+
+.modal .form h1,
+.view-modal .form h1,
+.user-view-modal .form h1 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    border-bottom: 1px solid #ebebeb;
+}
+
+.view-modal .form h1,
+.add-item-modal .form h1 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    border-bottom: 1px solid #ebebeb;
+}
+
+.modal .form button {
+    width: 3rem;
+    height: 40px;
+    background: #1C3A57;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1em;
+    color: #fff;
+    border: none;
+    transition: background 0.5s linear;
+    cursor: pointer;
+    border-radius: 5px;
+
+}
+
+.modal .form button:hover {
+
+    background: #1f65c0;
+
+}
+
+
+.modal .form form input:focus,
+.modal .form form select:focus,
+.add-item-modal .form form input:focus,
+.add-item-modal .form form select:focus,
+.user-view-modal .form form input:focus,
+.user-view-modal .form form select:focus,
+.user-view-modal .form form textarea:focus {
+
+    border-color: #4A89DC;
+    /* Change border color when focused */
+    outline: none;
+    /* Remove the default outline */
+    /* box-shadow: 0px 2px 2px 2px #3293ed; */
+
+
+}
+
+
+.add-new-item:hover {
+    background: #2acdfa;
+}
+
+
+.calculation {
+    width: 30%;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    margin: 10px;
+    background: #d8edf3;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.calculation .calculation__details h2 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.8em;
+    font-weight: 500;
+}
+
+.calculation .calculation__details span {
+    font-weight: bold;
+}
+
+.form-input .sub__total {
+    font-family: sans-serif;
+    font-size: 0.8em;
+}
+
+.form-input .sub__total span {
+    font-weight: 600;
+}
+
+.form-input .add-unit-btn,
+.form-input .add-category-btn {
+    background: transparent;
+    color: #4b95f5;
+    margin: 0;
+    position: relative;
+    left: -30px;
+    right: 0px;
+    bottom: 0;
+    top: -18px;
+    padding: 0px;
+    margin-right: 20px;
+    width: 10rem;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.7em;
+    border: none;
+    transition: background 0.5s linear;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.form-input .add-unit-btn:hover,
+.form-input .add-category-btn:hover {
+    background: transparent;
+}
+
+.container .form .wisvee-pharmacy {
+    margin: auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.container .form .wisvee-pharmacy h2 {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 2em;
+}
+
+.container .form .wisvee-pharmacy p {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.9em;
+}
+
+.container .form .wisvee-pharmacy span {
+    color: #1f65c0;
+}
+
+#calculation-div .calculation {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+}
+
+#calculation-div .checkout {
+    display: flex;
+    flex-direction: column;
+    background: rgb(189, 189, 189);
+    width: 13rem;
+    height: 13rem;
+    position: relative;
+}
+
+#calculation-div .checkout .checkout__header h1 {
+    background: rgb(109, 110, 112);
+    color: #f1f1f1;
+    padding: 7px;
+    text-align: center;
+    position: relative;
+}
+
+#calculation-div .checkout div.grand-total,
+#calculation-div .checkout div.amount-paid,
+#calculation-div .checkout div.balance {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    height: 2rem;
+}
+#calculation-div .checkout div.grand-total,
+#calculation-div .checkout div.amount-paid,
+#calculation-div .checkout div.balance {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    position: relative;
+}
+#calculation-div .checkout div.grand-total::after,
+#calculation-div .checkout div.amount-paid::after,
+#calculation-div .checkout div.balance::after {
+   content: '';
+   width: 100%;
+   height: 2px;
+   background: #f1f1f1;
+   position: absolute;
+   top: 2rem;
+}
+#calculation-div .checkout div.amount-paid::after{
+    top: 2.5rem;
+}
+#calculation-div .checkout div.amount-paid{
+    margin-bottom: 20px;
+}
+
+#calculation-div .checkout div.balance::after{
+    top: 2.5rem;
+}
+#calculation-div .checkout input {
+   height: 2rem;
+   width: 5rem;
+   text-align: right;
+}
+
+#calculation-div p{
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: 400;
+}
+
+#calculation-div .checkout .total-amount,#calculation-div .checkout .change{
+    font-weight: 600;
+}
+
+@media print {
+    body * {
+        visibility: hidden;
+        font-size: 12px;
+        width: 80mm; /* Adjust width for your specific printer */
+    }
+
+    #printInvoice,
+    #printInvoice * {
+        visibility: visible;
+    }
+
+    #printInvoice {
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+}

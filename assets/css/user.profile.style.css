@@ -1,0 +1,185 @@
+:root {
+    --main-bg-color: #4A89DC;
+    /* Define a global variable for background color */
+    --main-text-color: #0C0C0C;
+    /* Define a global variable for text color */
+    --primary-font-size: 16px;
+    /* Define a global variable for font size */
+    --primary-hover-bg-color: #1c67c9
+}
+
+.container .section .body__section .form .user__profile {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    align-self: center;
+}
+
+.container .section .body__section .user__profile img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+}
+
+.container .section .body__section .user__profile .edit__section {
+    background: var(--main-bg-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px;
+    padding: 3px;
+    width: 28px;
+    height: 28px;
+    position: relative;
+    bottom: 25px;
+    left: 30px;
+}
+
+.container .section .body__section .user__profile .edit__section input {
+    display: none;
+}
+
+.container .section .body__section .user__profile .edit__section img {
+    width: 90%;
+    height: 90%;
+    cursor: pointer;
+}
+
+.tab {
+    display: flex;
+    cursor: pointer;
+}
+
+.tab button {
+    background-color: #f1f1f1;
+    border: none;
+    outline: none;
+    padding: 10px 20px;
+    transition: background-color 0.3s;
+    font-size: 0.8em;
+    color: var(--main-text-color);
+    margin: 10px;
+    width: 10rem;
+}
+
+.tab button:hover {
+    background-color: transparent;
+
+}
+
+.tab button.active {
+    background-color: var(--main-bg-color);
+}
+
+/* Style for content */
+.tab-content {
+    display: none;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-top: none;
+    margin-top: 20px;
+    width: 25rem;
+}
+
+
+.tab-content .user__details h3,
+.tab-content .user__security h3 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.8em;
+    font-weight: 600;
+    width: 5rem;
+}
+
+.tab-content .user__security div input {
+    font-family: Arial, Helvetica, sans-serif;
+    height: 30px;
+    width: 17rem;
+    border: 1px solid #ddd;
+    outline: none;
+}
+.tab-content .user__security  {
+    display: flex;
+    width: 100%;
+}
+
+.tab-content .user__details p,
+.tab-content .user__security p {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.8em;
+    width: 20rem;
+    color: #6d6d6d;
+}
+
+.tab-content:where(.user__details, .user__security) {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.tab-content .user__details div,
+.tab-content .user__security div {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    align-items: center;
+    margin: 17px;
+}
+.tab-content .user__security div {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+.tab-content .user__security #logoutBtn {
+    width: 10rem;
+    background: #e62626;
+    padding-inline: 10px;
+}
+
+.tab-content .user__details div:not(:last-child),
+.tab-content .user__security div:not(:last-child) {
+    border-bottom: 1px solid #ddd;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.container .section .form {
+    align-items: flex-start;
+    position: relative;
+}
+
+
+.container .section .form form .form-input input {
+    width: 30%;
+}
+
+.container .section .form form input {
+    position: relative;
+}
+
+.container .section .form form label {
+    width: 55rem;
+}
+
+.container .section .form form div {
+    padding: 10px;
+    width: 40%;
+    margin-right: 5rem;
+}
+
+.container .section .form form .role {
+    width: 10rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+}
+
+.container .section .form form .role input[type="checkbox"] {
+    top: 0;
+    left: 0;
+
+}

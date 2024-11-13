@@ -1,9 +1,14 @@
+<?php include '../includes/auth.php' ?>
+
+
 <?php
 include '../includes/header.php'
     ?>
 <link rel="icon" href="assets/images/logo.png" type="image/png">
 <link rel="stylesheet" href="../assets/css/unit.style.css">
 <link rel="stylesheet" href="../assets/css/add-medicine.style.css">
+<link rel="icon" href="../assets/images/logo2.png" type="image/png">
+
 <?php
 include '../includes/header__rest.php';
 ?>
@@ -59,11 +64,11 @@ include '../includes/header__rest.php';
                             </tbody>
                         </table>
                         <div class="pagination">
-                            <button id="prevBtn" disabled
-                                style="width: 3rem; height: 30px; font-size: 0.6em; background: #1c67c9;">PREV</button>
+                            <button id="prevBtn" 
+                                style="width: 3rem; height: 30px; font-size: 0.6em;">PREV</button>
                             <span id="currentPage"></span>
                             <button id="nextBtn"
-                                style="width: 3rem; height: 30px; font-size: 0.6em; background: #1c67c9;">NEXT</button>
+                                style="width: 3rem; height: 30px; font-size: 0.6em; ">NEXT</button>
                         </div>
                     </div>
 
@@ -73,7 +78,7 @@ include '../includes/header__rest.php';
         </div>
     </div>
     <div class="modal" style="z-index:1;">
-        <div class="form" style="width: 70%; height:70%;">
+        <div class="form" style="width: 70%; height:82%;">
             <h1>Edit Purchase</h1>
             <p class="error"></p>
             <form action="" id="medicineForm" class="form-flex">
@@ -126,7 +131,7 @@ include '../includes/header__rest.php';
         </div>
     </div>
     <div class="add-item-modal" style="z-index:1;">
-        <div class="form" style="width: 70%; height:70%;">
+        <div class="form" style="width: 70%; height:83%;">
             <h1 style="font-weight: 600; font-size:1.2em">Insert new item purchase</h1>
             <p class="error" style="text-align: center; margin: auto;"></p>
             <form action="" id="medicineForm" class="form-flex">
@@ -228,9 +233,9 @@ include '../includes/header__rest.php';
 </div>
 <!-- <script src="../utils/make-request.js"></script> -->
 <!-- <script src="../assets/js/add-unit.js"></script> -->
-<script src="../utils/some-functions.js"></script>
-<script src="../assets/js/sweetalert.min.js"></script>
-<script src="../assets/js/fetch-purchase.js"></script>
+<script src="../utils/some-functions.js" defer></script>
+<script src="../assets/js/sweetalert.min.js" defer></script>
+<script src="../assets/js/fetch-purchase.js" defer></script>
 
 <?php
 include '../includes/footer.php';

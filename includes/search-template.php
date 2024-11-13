@@ -1,3 +1,6 @@
+<?php include '../includes/auth.php' ?>
+
+
 <?php
 include '../includes/header.php';
 ?>
@@ -6,6 +9,8 @@ include '../includes/header.php';
 <link rel="stylesheet" href="../assets/css/unit.style.css">
 <link rel="stylesheet" href="../assets/css/add-medicine.style.css">
 <link rel="stylesheet" href="../assets/css/report.generation.css">
+<link rel="icon" href="../assets/images/logo2.png" type="image/png">
+
 <style>
 
 </style>
@@ -35,13 +40,17 @@ include '../includes/header__rest.php';
                 <input type="hidden" name="searchType" id="searchType" value="<?= $searchKind ?>">
                 <div class="form">
                     <div style="display: flex; flex-direction: row; justify-content: space-between;;">
-                        <h1 class="header">-----<?= $header ?>-----</h1>
+                        <h1 class="header" style="width: 100%;">-----<?= $header ?>-----</h1>
                         <button class="new-search" style="display: none;">New Search</button>
                     </div>
+                    <p class="error" style="color:red; width: 30%; align-self: flex-start; font-size: 0.8em;">
+                        jdhfjdksf</p>
                     <div class="search-form">
                         <div class="form-input">
                             <label for="medicine-name"><?= $keyword ?></label>
-                            <input type="text" name="searchInput" id="searchInput" style="width: 50%; font-size: 0.9em; border: 2px solid #e6e6e6;" placeholder="Please enter an invoice ID...">
+                            <input type="text" name="searchInput" id="searchInput"
+                                style="width: 50%; font-size: 0.9em; border: 2px solid #e6e6e6;"
+                                placeholder="Please enter an invoice ID...">
                         </div>
                         <div class="form-input">
                             <button type="button" onclick="search()">Search...</button>
@@ -139,39 +148,39 @@ include '../includes/header__rest.php';
 
                             </tbody>
                         </table>
-                        <?php if($searchKind === 'searchInvoice'){ ?>
-                        <div class="report-summary"
-                            style="background: #F2F2F2;   width: 15rem;margin-top: 15px;osition: relative;">
-                            <p class="report-header">Report Summary</p>
+                        <?php if ($searchKind === 'searchInvoice') { ?>
+                            <div class="report-summary"
+                                style="background: #F2F2F2;   width: 15rem;margin-top: 15px;osition: relative;">
+                                <p class="report-header">Report Summary</p>
 
-                            <!-- <p style="margin-bottom: 18px; font-weight: 600; font-family: Arial, Helvetica, sans-serif;"
+                                <!-- <p style="margin-bottom: 18px; font-weight: 600; font-family: Arial, Helvetica, sans-serif;"
                                 class="details_paragraph">
                                 Details</p> -->
-                            <?php if ($searchKind === 'searchInvoice' || $searchKind === 'purchaseReport') { ?>
-                                <div class="summary-details">
-                                    <div>
-                                        <p id="total-quantity">Total Quantity</p>
-                                        <span class="quantity-span"></span>
-
-                                    </div>
-                                    <div class="grand-total">
-                                        <p id="grand-total">Grand Total</p>
-                                        <span class="total-span"></span>
-
-                                    </div>
-                                </div>
-
-                            <?php } else if ($searchKind === 'expenseReport') { ?>
+                                <?php if ($searchKind === 'searchInvoice' || $searchKind === 'purchaseReport') { ?>
                                     <div class="summary-details">
                                         <div>
+                                            <p id="total-quantity">Total Quantity</p>
+                                            <span class="quantity-span"></span>
+
+                                        </div>
+                                        <div class="grand-total">
                                             <p id="grand-total">Grand Total</p>
-                                            <span class="expense-total-span"></span>
+                                            <span class="total-span"></span>
 
                                         </div>
                                     </div>
-                            <?php } ?>
-                        </div>
-                        <button class="printBtn" style="border-radius: 3px; margin: 20px 0 30px 0">Print</button>
+
+                                <?php } else if ($searchKind === 'expenseReport') { ?>
+                                        <div class="summary-details">
+                                            <div>
+                                                <p id="grand-total">Grand Total</p>
+                                                <span class="expense-total-span"></span>
+
+                                            </div>
+                                        </div>
+                                <?php } ?>
+                            </div>
+                            <button class="printBtn" style="border-radius: 3px; margin: 20px 0 30px 0">Print</button>
                         <?php } ?>
                         <div class="page-break"></div>
                     </div>

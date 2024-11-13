@@ -1,7 +1,11 @@
+<?php include '../includes/auth.php' ?>
+
 <?php
 include '../includes/header.php'
     ?>
 <link rel="stylesheet" href="../assets/css/unit.style.css">
+<link rel="icon" href="../assets/images/logo2.png" type="image/png">
+
 <?php
 include '../includes/header__rest.php';
 ?>
@@ -20,7 +24,7 @@ include '../includes/header__rest.php';
                     <img src="../assets/images/category-page.png" alt="">
                     <div class="unit__sub__header">
                         <h1>Category</h1>
-                        <h2>medicine / <span>add-category</span></h2>
+                        <h2>product / <span>add-category</span></h2>
                     </div>
                 </div>
                 <!-- <div class="charts">
@@ -40,10 +44,10 @@ include '../includes/header__rest.php';
                                 <label for="Category-Name">Category name:</label>
                                 <input type="text" name="category-name" id="category-name" placeholder="eg.syrup">
                             </div>
-                            <div class="form-input">
+                            <!-- <div class="form-input">
                                 <label for="Category">Category:</label>
                                 <input type="text" name="category" id="category" placeholder="eg.syrup">
-                            </div>
+                            </div> -->
 
                         </div>
                         <div class="button-section">

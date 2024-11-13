@@ -1,9 +1,13 @@
+<?php include '../includes/auth.php' ?>
+
 <?php
 include '../includes/header.php';
 ?>
-<link rel="stylesheet" href="../assets/fonts/fonts.css">
+
 <link rel="stylesheet" href="../assets/css/unit.style.css">
 <link rel="stylesheet" href="../assets/css/add-medicine.style.css">
+<!-- <link rel="stylesheet" href="../assets/css/add-product.style.css"> -->
+<link rel="icon" href="../assets/images/logo2.png" type="image/png">
 
 
 <?php
@@ -20,21 +24,26 @@ include '../includes/header__rest.php';
                 <?php include "../includes/navbar.php"; ?>
             </div>
             <div class="body__detail__container">
-                <div class="unit__header">
-                    <img src="../assets/images/add-medicine.png" alt="Medicine Image">
-                    <div class="unit__sub__header">
-                        <h1>Medicine</h1>
-                        <h2>medicine / <span>add Medicine</span></h2>
+            <div class="unit__header">
+                    <div class="unit">
+                        <img src="../assets/images/addproduct.png" alt="">
+                        <div class="unit__sub__header">
+                            <h1>Product</h1>
+                            <h2>product / <span>add-product</span></h2>
+                        </div>
+
                     </div>
+                    <a href="./view.product.php" class="add__new__unit" style="border-radius: 2px;">
+                        Manage Product
+                    </a>
                 </div>
 
                 <div class="form">
-                    <h1>Add New Medicine</h1>
+                    <h1>Add New Product</h1>
                     <p class="error"></p>
-                    <form action="" id="medicineForm" class="form-flex">
-
+                    <form action="" id="medicineForm" class="form-flex" style="display: flex; flex-direction: column">
                         <div class="form-input">
-                            <label for="medicine-name">Medicine Name</label>
+                            <label for="medicine-name">Product Name</label>
                             <input type="text" name="medicine-name" id="medicine-name">
                         </div>
 
@@ -96,7 +105,7 @@ include '../includes/header__rest.php';
 <script src="../utils/some-functions.js"></script>
 <script src="../utils/make-request.js"></script>
 <script src="../assets/js/sweetalert.min.js"></script>
-<script src="../assets/js/add-medicine.js"></script>
+<script src="../assets/js/add-product.js"></script>
 
 <?php
 include '../includes/footer.php';

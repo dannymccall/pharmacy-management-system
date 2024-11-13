@@ -1,6 +1,7 @@
 <?php
 include '../cors/cors.php';
 include '../db/db.php';
+include './util.script.php';
 $method = $_SERVER["REQUEST_METHOD"];
 $service = $_SERVER["HTTP_SERVICE"];
 
@@ -10,6 +11,7 @@ $service = $_SERVER["HTTP_SERVICE"];
 // } else {
 $subtotal = 0;
 $form_data = json_decode(file_get_contents("php://input"), true);
+$purchasenumber = 'P' . generateCode(9);
 $purchasedDate = null;
 
 if ($method === 'POST' && $service === 'addPurchase') {
@@ -29,7 +31,7 @@ if ($method === 'POST' && $service === 'addPurchase') {
         }
 
         // Corrected SQL syntax
-        $stmt = $pdo->prepare("INSERT INTO purchases (products, date, subtotal, paymentmode) VALUES (:products, :date, :subtotal, :paymentmode)");
+        $stmt = $pdo->prepare("INSERT INTO purchases (products, date, subtotal, paymentmode, purchasenumber) VALUES (:products, :date, :subtotal, :paymentmode, :purchasenumber)");
 
         // Encode products as JSON
         $products = json_encode($form_data['products']);
@@ -39,9 +41,17 @@ if ($method === 'POST' && $service === 'addPurchase') {
         $stmt->bindParam(':date', $purchasedDate); // Use the purchased date
         $stmt->bindParam(':subtotal', $subtotal);
         $stmt->bindParam(':paymentmode', $paymentMode);
+        $stmt->bindParam(':purchasenumber', $purchasenumber);
 
         // Execute the statement and check for success
         if ($stmt->execute()) {
+            (int) $userId = returnUserId();
+            $insertIntoActivity = insertIntoActivity($pdo, 'New purchase activity', $userId);
+
+            if (!$insertIntoActivity) {
+                echo json_encode(['success' => false, 'message' => 'Something happened at activity insertion', $user]);
+                return;
+            }
             echo json_encode(['success' => true, 'message' => 'Purchased successfully']);
             return;
         } else {
@@ -65,7 +75,7 @@ if ($method === 'POST' && $service === 'addPurchase') {
     $total_items = $result->fetch()['count'];
 
 
-    $stmt = $pdo->prepare("SELECT * FROM purchases LIMIT $offset, $items_per_page");
+    $stmt = $pdo->prepare("SELECT * FROM purchases ORDER BY DATE(date) DESC LIMIT $offset, $items_per_page");
 
     if ($stmt->execute()) {
 
@@ -96,6 +106,13 @@ if ($method === 'POST' && $service === 'addPurchase') {
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         if ($stmt->execute()) {
 
+            (int) $userId = returnUserId();
+            $insertIntoActivity = insertIntoActivity($pdo, 'Purchase deletion activity', $userId);
+
+            if (!$insertIntoActivity) {
+                echo json_encode(['success' => false, 'message' => 'Something happened at activity insertion', $user]);
+                return;
+            }
             echo json_encode(['success' => true, 'message' => 'Done']);
             return;
         } else {
@@ -127,15 +144,22 @@ if ($method === 'POST' && $service === 'addPurchase') {
             $stmt = $pdo->prepare($sql);
 
             $subTotal = 0;
-            // $products = json_decode($products);
-            // foreach($products as $product => $row){
-            // }
+
+            foreach (json_decode($form_data['products']) as $product) {
+                $subtotal += $product->total;
+            }
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->bindParam(':products', $products);
-            $stmt->bindParam(':subNewTotal', $newSubTotal, PDO::PARAM_INT);
+            $stmt->bindParam(':subNewTotal', $subtotal, PDO::PARAM_INT);
 
             if ($stmt->execute()) {
+                (int) $userId = returnUserId();
+                $insertIntoActivity = insertIntoActivity($pdo, 'Purchase update activity', $userId);
 
+                if (!$insertIntoActivity) {
+                    echo json_encode(['success' => false, 'message' => 'Something happened at activity insertion', $user]);
+                    return;
+                }
                 echo json_encode(['success' => true, 'message' => 'Updated']);
                 return;
             } else {

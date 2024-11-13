@@ -1,9 +1,14 @@
+<?php include '../includes/auth.php' ?>
+
 <?php
 include '../includes/header.php';
 ?>
 <link rel="stylesheet" href="../assets/fonts/fonts.css">
 <link rel="stylesheet" href="../assets/css/unit.style.css">
 <link rel="stylesheet" href="../assets/css/add-medicine.style.css">
+<link rel="icon" href="../assets/images/logo2.png" type="image/png">
+
+<script src="../utils/some-functions.js"></script>
 
 
 <?php
@@ -33,17 +38,19 @@ include '../includes/header__rest.php';
                     <p class="error"></p>
                     <form action="" id="purchaseForm" class="form-flex">
 
-                        <div class="form-input">
-                            <label for="date">Purchased Date</label>
-                            <input type="date" name="purchased-date" style="width: 65%;" id="medicine-name">
-                        </div>
-                        <div class="form-input">
-                            <label for="date">Payment Mode</label>
-                            <select name="paymentMode" id="paymentMode">
-                                <option value="">---Select payment mode---</option>
-                                <option value="momo">Mobile Money</option>
-                                <option value="cash">Cash</option>
-                            </select>
+                        <div style="width: 100%; display:flex;">
+                            <div class="form-input">
+                                <label for="date">Purchased Date</label>
+                                <input type="date" name="purchased-date" style="width: 65%;" id="medicine-name">
+                            </div>
+                            <div class="form-input">
+                                <label for="date">Payment Mode</label>
+                                <select name="paymentMode" id="paymentMode">
+                                    <option value="">---Select payment mode---</option>
+                                    <option value="momo">Mobile Money</option>
+                                    <option value="cash">Cash</option>
+                                </select>
+                            </div>
                         </div>
                         <!-- <div class="form-input">
                          
@@ -59,7 +66,7 @@ include '../includes/header__rest.php';
                                         <tr>
                                             <th>Medicine Name</th>
                                             <th>Expiry Date</th>
-                                            <th>Bach ID</th>
+                                            <th>Batch ID</th>
                                             <th>Unit Price</th>
                                             <th>Quantity</th>
                                             <th>Total</th>
@@ -84,7 +91,7 @@ include '../includes/header__rest.php';
                                             <td> <input type="number" step="any" name="total" placeholder="Total" id="total" class="total" readonly></td>
                                             <td>
                                                 <button type="button" style="width: 6rem; background: #fa382a;"
-                                                    class="delete-btn">Delete</button>
+                                                    class="delete-btn">Remove</button>
                                             </td>
 
                                         </tr>
@@ -92,8 +99,8 @@ include '../includes/header__rest.php';
 
                                     </tbody>
                                 </table>
-                                <div class="form-input" style="display: flex; flex-direction: row; align-items:center; gap: 15px;">
-                                    <button type="button" style="background: #2acdfa; font-size: 0.9em; width: 8rem;"
+                                <div class="form-input calculation" style="display: flex; flex-direction: row; align-items:center; gap: 15px; width: 20rem;">
+                                    <button type="button" style="font-size: 0.9em; width: 8rem; background: #174066"
                                         class="add-new-item">Add New
                                         Item</button>
                                         <p class="sub__total">Sub total: <span></span></p>
@@ -120,10 +127,10 @@ include '../includes/header__rest.php';
         </div>
     </div>
     <div class="footer">
+        <h1>Hello footer</h1>
     </div>
 </div>
 
-<script src="../utils/some-functions.js"></script>
 <script src="../utils/make-request.js"></script>
 <script src="../assets/js/sweetalert.min.js"></script>
 <script src="../assets/js/add-purchase.js"></script>

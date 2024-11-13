@@ -7,9 +7,9 @@ $method = $_SERVER["REQUEST_METHOD"];
 $service = $_SERVER["HTTP_SERVICE"];
 
 if ($method === 'GET' && $service === 'getDashboardDetails') {
-    $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
-    $items_per_page = 5;
-    $offset = ($page - 1) * $items_per_page;
+    // $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+    // $items_per_page = 5;
+    // $offset = ($page - 1) * $items_per_page;
 
     try {
         $expenses = fetchFromDatabaseWithCount($pdo, 'expenses');
@@ -40,6 +40,9 @@ if ($method === 'GET' && $service === 'getDashboardDetails') {
         $totalProfit = null;
         $totalPurchases = null;
         $totalSales = null;
+        $notifications = null;
+        $todaysTotalPurchase = 0.00;
+        $todaysTotalExpense = 0.00;
         foreach ($expenses as $expense) {
             $totalExpense += $expense['total'];
         }
@@ -53,36 +56,58 @@ if ($method === 'GET' && $service === 'getDashboardDetails') {
             $expectedRevenue += $unitProfit * $medicine['quantity'];
         }
 
-        foreach($purchases as $purchase)
+        foreach ($purchases as $purchase) {
             $totalPurchases += $purchase['subtotal'];
+            $purchaseProduct = json_decode($purchase['products'], true);
+            $purchaseID = $purchase['purchasenumber'];
+            $notifications = getExpirationAlert($purchaseProduct, $purchaseID);
+        }
 
-        foreach($sales as $sale)
+        foreach ($sales as $sale)
             $totalSales += $sale['subtotal'];
 
+        date_default_timezone_set('UTC');
         $today = date('Y-m-d');
-        $total_items = fetchFromDatabaseWithCount($pdo, 'invoices', "WHERE DATE(dateofsale) = '$today'", true);
+        // $total_items = fetchFromDatabaseWithCount($pdo, 'invoices', "WHERE DATE(created_at) = '2024-11-03'", true);
 
         $invoices = fetchFromDatabase(
             $pdo,
             'invoices',
             '*',
-            "WHERE DATE(dateofsale) = '2024-11-03'",
+            "WHERE DATE(dateofsale) = '$today'",
             '',
-            'dateofsale DESC', // Order by most recent sales
-            "$offset, $items_per_page",
+            '', // Order by most recent sales
+            '',
             ''              // Limit to 10 records
         );
-        $todaysActivities = fetchFromDatabase(
+
+        $todaysPurchases = fetchFromDatabase(
             $pdo,
-            'activitymanagement a',
-            'a.userId, a.created_at, u.username, a.activity',
-            "WHERE DATE(a.created_at) = '2024-11-03'",
+            'purchases',
+            '*',
+            "WHERE DATE(date) = '$today'",
             '',
-            'created_at DESC', // Order by most recent sales
-            "$offset, $items_per_page",
-            "JOIN users u ON a.userId = u.id"
-            // Limit to 10 records
+            '',
+            '',
+            ''
         );
+
+        $todaysExpenses = fetchFromDatabase(
+            $pdo,
+            'expenses',
+            '*',
+            "WHERE DATE(created_at) = '$today'",
+            '',
+            '',
+            '',
+            ''
+        );
+
+        foreach ($todaysPurchases as $purchases)
+            $todaysTotalPurchase += $purchase['subtotal'];
+
+        foreach ($todaysExpenses as $expense)
+            $todaysTotalExpense += $expense['total'];
 
         echo json_encode([
             'success' => true,
@@ -93,23 +118,14 @@ if ($method === 'GET' && $service === 'getDashboardDetails') {
                     'expectedRevenue' => $expectedRevenue,
                     'lowStockCondition' => $lowStockCount,
                     'monthSales' => $months,
-                    'monthTotals' =>$totals,
+                    'monthTotals' => $totals,
                     'totalSales' => $totals,
-                    'total_items' => $total_items,
                     'totalPurchases' => $totalPurchases,
-                    'todaySales' => [
-                        'invoices' => $invoices,
-                        'total_items' => $total_items,
-                        'items_per_page' => $items_per_page,
-                        'current_page' => $page
-                    ],
-                    'todaysActivities' => [
-                        'activity' => $todaysActivities,
-                        'total_items' => $total_items,
-                        'items_per_page' => $items_per_page,
-                        'current_page' => $page
-                    ],
-                    'totalInvoiceSales' => $totalSales
+                    'todaySales' => $invoices,
+                    'totalInvoiceSales' => $totalSales,
+                    'notifications' => $notifications,
+                    'todaysPurchase' => $todaysTotalPurchase,
+                    'todaysExpense' => $todaysTotalExpense
                 ]
         ]);
         return;

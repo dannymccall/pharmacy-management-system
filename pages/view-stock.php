@@ -1,14 +1,19 @@
+<?php include '../includes/auth.php' ?>
+
+
 <?php
 include '../includes/header.php'
     ?>
 <link rel="icon" href="assets/images/logo.png" type="image/png">
 <link rel="stylesheet" href="../assets/css/unit.style.css">
 <link rel="stylesheet" href="../assets/css/add-medicine.style.css">
+<link rel="icon" href="../assets/images/logo2.png" type="image/png">
+
 <?php
 include '../includes/header__rest.php';
 ?>
 <style>
-    
+
 </style>
 <div class="container">
     <div class="section">
@@ -39,7 +44,16 @@ include '../includes/header__rest.php';
                         <canvas id="operation-data" width="400" height="200"></canvas>
                     </div> -->
                 <div class="form">
-                    <h1>All Stock</h1>
+
+                    <div class="stock-information">
+                        <h1>All Stock</h1>
+                        <div class="outOfStock">
+                            <div></div>
+                            <p>Running out of stock</p>
+                            <div></div>
+                            <p>In stock</p>
+                        </div>
+                    </div>
                     <p class="error">gfhgfd</p>
                     <div class="table-container">
                         <table id="itemTable">
@@ -62,11 +76,9 @@ include '../includes/header__rest.php';
                             </tbody>
                         </table>
                         <div class="pagination">
-                            <button id="prevBtn" disabled
-                                style="width: 3rem; height: 30px; font-size: 0.6em; background: #1c67c9;">PREV</button>
+                            <button id="prevBtn" style="width: 3rem; height: 30px; font-size: 0.6em;">PREV</button>
                             <span id="currentPage"></span>
-                            <button id="nextBtn"
-                                style="width: 3rem; height: 30px; font-size: 0.6em; background: #1c67c9;">NEXT</button>
+                            <button id="nextBtn" style="width: 3rem; height: 30px; font-size: 0.6em; ">NEXT</button>
                         </div>
                     </div>
 
@@ -75,7 +87,7 @@ include '../includes/header__rest.php';
             </div>
         </div>
     </div>
-   
+
     <div class="footer">
 
     </div>

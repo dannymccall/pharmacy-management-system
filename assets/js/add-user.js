@@ -35,3 +35,5 @@ addUserForm.addEventListener("submit", async function (e) {
    this.reset();
   }
 });
+
+toggleMenu()

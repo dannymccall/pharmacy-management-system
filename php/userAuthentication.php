@@ -24,7 +24,7 @@ if ($method === 'POST' && $service === 'userLogin') {
 
         $stmt->bindParam(':username', $user__name);
 
-        
+
         $stmt->execute();
 
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -37,17 +37,13 @@ if ($method === 'POST' && $service === 'userLogin') {
         if (password_verify($user__password, $user['password'])) {
             (int) $userId = $user['id'];
             $insertIntoActivity = insertIntoActivity($pdo, 'Login Activity', $userId);
-            // $activityData = [
-            //     'activity' => "Login Activity",
-            //     "userId" => $userId,
-            // ];
-
-            // $insertIntoActivity = insertData($pdo, 'activitymanagement',  $activityData);
 
             if (!$insertIntoActivity) {
                 echo json_encode(['success' => false, 'message' => 'Something happened at activity insertion', $user]);
                 return;
             }
+
+
             $lastChange = new DateTime($user['last_password_change']);
             $currentDate = new DateTime();
             $nextChange = clone $lastChange;
@@ -55,6 +51,14 @@ if ($method === 'POST' && $service === 'userLogin') {
             $interval = $currentDate->diff($nextChange);
 
             $daysLeft = $interval->days * ($interval->invert ? -1 : 1);
+
+            $purchases = fetchFromDatabaseWithCount($pdo, 'purchases');
+            foreach ($purchases as $purchase) {
+                $purchaseProduct = json_decode($purchase['products'], true);
+                $purchaseID = $purchase['purchasenumber'];
+                $notifications = getExpirationAlert($purchaseProduct, $purchaseID);
+            }
+
             $_SESSION['username'] = $user['username'];
             $_SESSION['user_role'] = $user['role'];
             $_SESSION['firstname'] = $user['firstname'];
@@ -118,7 +122,7 @@ if ($method === 'POST' && $service === 'userLogin') {
             (int) $userId = returnUserId();
             $insertIntoActivity = insertIntoActivity($pdo, 'Add user activity', $userId);
 
-         
+
             if (!$insertIntoActivity) {
                 echo json_encode(['success' => false, 'message' => 'Something happened at activity insertion', $user]);
                 return;
@@ -163,7 +167,7 @@ if ($method === 'POST' && $service === 'userLogin') {
     }
 
 } else if ($method === 'DELETE' && $service === 'deleteUser') {
-    $form_data = json_decode(file_get_contents(filename: "php://input"), true);
+
     $id = $form_data['id'];
 
     try {
@@ -221,7 +225,7 @@ if ($method === 'POST' && $service === 'userLogin') {
 
             if ($stmt->execute()) {
                 (int) $userId = returnUserId();
-                $insertIntoActivity = insertIntoActivity($pdo, 'Update user activity', $userId);
+                $insertIntoActivity = insertIntoActivity($pdo, 'User update activity', $userId);
 
                 if (!$insertIntoActivity) {
                     echo json_encode(['success' => false, 'message' => 'Something happened at activity insertion', $user]);
@@ -271,7 +275,7 @@ if ($method === 'POST' && $service === 'userLogin') {
                 $stmt->execute();
 
                 (int) $userId = returnUserId();
-                $insertIntoActivity = insertIntoActivity($pdo, 'Add user activity', $userId);
+                $insertIntoActivity = insertIntoActivity($pdo, 'Profile picture upload activity', $userId);
 
                 if (!$insertIntoActivity) {
                     echo json_encode(['success' => false, 'message' => 'Something happened at activity insertion', $user]);
@@ -318,7 +322,7 @@ if ($method === 'POST' && $service === 'userLogin') {
                 if ($stmt->execute()) {
 
                     (int) $userId = returnUserId();
-                    $insertIntoActivity = insertIntoActivity($pdo, 'Change Password activity', $userId);
+                    $insertIntoActivity = insertIntoActivity($pdo, 'Password change activity', $userId);
 
                     $_SESSION = array();
                     session_destroy();
@@ -344,19 +348,78 @@ if ($method === 'POST' && $service === 'userLogin') {
         echo json_encode(['success' => false, 'message' => 'All fields required']);
         return;
     }
-} else
+} else if ($method === 'POST' && $service === 'logout') {
 
-    if ($method === 'POST' && $service === 'logout') {
+    (int) $userId = returnUserId();
+    $insertIntoActivity = insertIntoActivity($pdo, 'Logout activity', $userId);
+    $_SESSION = array();
+    // Destroy the session.
+    session_destroy();
 
-        (int) $userId = returnUserId();
-        $insertIntoActivity = insertIntoActivity($pdo, 'Logout activity', $userId);
-        $_SESSION = array();
-        // Destroy the session.
-        session_destroy();
+    echo json_encode(['success' => true, 'message' => 'Logout successful']);
+    return;
+} else if ($method === 'GET' && $service === 'getUserActivities') {
 
-        echo json_encode(['success' => true, 'message' => 'Logout successful']);
+    (string) $username = isset($_GET['username']) ? $_GET['username'] : null;
+    $today = date('Y-m-d');
+
+    $userActivity = fetchFromDatabase(
+        $pdo,
+        'activitymanagement a',
+        'a.userId, a.created_at, u.username, a.activity',
+        "WHERE DATE(a.created_at) = '$today'",
+        '',
+        'created_at DESC', // Order by most recent sales
+        '10',
+        "JOIN users u ON a.userId = u.id"
+        // Limit to 10 records
+    );
+
+    echo json_encode(['userActivity' => $userActivity]);
+
+} else if ($method === 'POST' && $service === 'forgotPassword') {
+    $user__name = $form_data['username'];
+
+    if (empty(trim($user__name))) {
+        echo json_encode(['success' => false, 'message' => 'Username cannot be empty']);
         return;
     }
+
+    $sql = "SELECT * FROM users WHERE username = :username";
+    $stmt = $pdo->prepare($sql);
+
+    $stmt->bindParam(':username', $user__name);
+    $stmt->execute();
+
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (empty($user)) {
+        echo json_encode(['success' => false, 'message' => 'Username invalid']);
+        return;
+    }
+    (int) $userId = $user['id'];
+    $insertIntoActivity = insertIntoActivity($pdo, 'Password reset activity', $userId);
+
+    if (!$insertIntoActivity) {
+        echo json_encode(['success' => false, 'message' => 'Something happened at activity insertion', $user]);
+        return;
+    }
+
+    (string) $newPassword = generatePassword(8);
+    (string) $hashNewPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+
+    $sql = "UPDATE users SET password = :password WHERE username = :username";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':password', $hashNewPassword);
+    $stmt->bindParam(':username', $user__name);
+    
+    
+    $stmt->execute();
+    echo json_encode(['success' => true, 'message' => 'Password reset successful', 'password' => $newPassword, $user__name]);
+    return;
+
+}
 
 // Redirect to login page
 

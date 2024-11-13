@@ -1,3 +1,4 @@
+<?php include '../includes/auth.php' ?>
 <?php
 include '../includes/header.php';
 ?>
@@ -5,6 +6,7 @@ include '../includes/header.php';
 <link rel="stylesheet" href="../assets/css/unit.style.css">
 <!-- <link rel="stylesheet" href="../assets/css/add-medicine.style.css"> -->
 <link rel="stylesheet" href="../assets/css/report.generation.css">
+<link rel="icon" href="../assets/images/logo2.png" type="image/png">
 
 <?php
 include '../includes/header__rest.php';
@@ -17,7 +19,9 @@ include '../includes/header__rest.php';
         </div>
         <div class="body__section">
             <div class="body__header__section">
-                <?php include "../includes/navbar.php"; ?>
+                <?php
+                include "../includes/navbar.php";
+                ?>
             </div>
             <div class="body__detail__container">
                 <div class="unit__header">
@@ -34,11 +38,11 @@ include '../includes/header__rest.php';
                         <button class="new-report" style="display: none;">New Report</button>
                     </div>
                     <p class="error"></p>
-                    <form action="" id="reportForm" class="form-flex">
+                    <form action="" id="reportForm" class="form-flex" style="display: 100%">
                         <div class="dates">
                             <div class="form-input" id="startDateDiv">
                                 <label for="startDate">Start Date</label>
-                                <input type="date" name="startDate" id="startDate">
+                                <input type="date" name="startDate" id="startDate" style="">
                             </div>
 
                             <div class="form-input" id="endDateDiv">
@@ -64,13 +68,21 @@ include '../includes/header__rest.php';
                         </div>
                     </form>
                     <div class="table-container" id="table-container" style="display: none;">
-                        <div class="wisvee-pharmacy" style="    margin: auto;text-align: center;display: flex;flex-direction: column;gap: 10px;">
+                        <div class="wisvee-pharmacy"
+                            style="    margin: auto;text-align: center;display: flex;flex-direction: column;gap: 10px;">
                             <img src="../assets/images/logo2.png" alt="" srcset=""
                                 style="width: 100px; height: 100px; margin: auto;">
-                            <h2 style="font-family: 'Courier New', Courier, monospace;font-size: 2em;">WISVEE PHARMACY</h2>
-                            <p style="font-family: Arial, Helvetica, sans-serif;font-size: 0.9em;">Email: <span>viviankudatsi@yahoo.com</span></p>
-                            <p style="font-family: Arial, Helvetica, sans-serif;font-size: 0.9em;">Tel: <span style=" color: #1f65c0;">0248744219 / 0269465943</span></p>
-                            <p style="margin-bottom: 18px; font-weight: 600;font-family: Arial, Helvetica, sans-serif;font-size: 0.9em;"><?= $reportType ?></p>
+                            <h2 style="font-family: 'Courier New', Courier, monospace;font-size: 2em;">WISVEE PHARMACY
+                            </h2>
+                            <p style="font-family: Arial, Helvetica, sans-serif;font-size: 0.9em;">Email:
+                                <span>viviankudatsi@yahoo.com</span>
+                            </p>
+                            <p style="font-family: Arial, Helvetica, sans-serif;font-size: 0.9em;">Tel: <span
+                                    style=" color: #1f65c0;">0248744219 / 0269465943</span></p>
+                            <p
+                                style="margin-bottom: 18px; font-weight: 600;font-family: Arial, Helvetica, sans-serif;font-size: 0.9em;">
+                                <?= $reportType ?>
+                            </p>
                         </div>
                         <table id="itemTable" style="margin-bottom: 20px;" class="summary-table">
                             <p style="margin-bottom: 25px; font-weight: 600; font-family: Arial, Helvetica, sans-serif;"
@@ -122,9 +134,9 @@ include '../includes/header__rest.php';
                                         <th>Total</th>
                                     </tr>
                                 <?php } else if ($reportKind === 'purchaseReport') { ?>
-                                    <p style="margin-bottom: 18px; font-weight: 600; font-family: Arial, Helvetica, sans-serif;"
-                                    class="details_paragraph">
-                                    Details</p>
+                                        <p style="margin-bottom: 18px; font-weight: 600; font-family: Arial, Helvetica, sans-serif;"
+                                            class="details_paragraph">
+                                            Details</p>
                                         <tr>
                                             <th>Purchase Date</th>
                                             <th>Medicina Name</th>
@@ -140,7 +152,8 @@ include '../includes/header__rest.php';
 
                             </tbody>
                         </table>
-                        <div class="report-summary" style="background: #F2F2F2;   width: 15rem;margin-top: 15px;osition: relative;">
+                        <div class="report-summary"
+                            style="background: #F2F2F2;   width: 15rem;margin-top: 15px;osition: relative;">
                             <p class="report-header">Report Summary</p>
 
                             <!-- <p style="margin-bottom: 18px; font-weight: 600; font-family: Arial, Helvetica, sans-serif;"
@@ -185,7 +198,7 @@ include '../includes/header__rest.php';
 <script src="../utils/some-functions.js"></script>
 <script src="../utils/make-request.js"></script>
 <script src="../assets/js/sweetalert.min.js"></script>
-<script src="../assets/js/add-medicine.js"></script>
+<script src="../assets/js/report.js"></script>
 
 <?php
 include '../includes/footer.php';

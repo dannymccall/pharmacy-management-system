@@ -1,6 +1,6 @@
 // Helper function to select elements
-let itemSelect = document.querySelectorAll("tbody select");
-let select = selectElement("tbody select");
+let itemSelect = document.querySelectorAll(".table__body select");
+let select = selectElement(".table__body select");
 
 async function fetchMedicines() {
   const response = await makeRequest(
@@ -196,8 +196,9 @@ document
     );
 
     if (!response.success) {
-      selectElement(".error").textContent = response.message;
-      selectElement(".error").style.display = "block";
+      // selectElement(".error").textContent = response.message;
+      // selectElement(".error").style.display = "block";
+      showErrorMessage('.error', response.message);
       console.log(response);
     } else {
       console.log(response);
@@ -263,3 +264,6 @@ function generateProductId() {
     () => characters[Math.floor(Math.random() * characters.length)]
   ).join("");
 }
+
+
+toggleMenu()

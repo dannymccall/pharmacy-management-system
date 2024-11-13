@@ -161,3 +161,6 @@ document.querySelector(".new-report").addEventListener("click", function () {
   }
   this.style.display = "none";
 });
+
+
+toggleMenu()

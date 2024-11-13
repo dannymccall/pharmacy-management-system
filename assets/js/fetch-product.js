@@ -133,6 +133,9 @@ async function openEditForm(medicine) {
   const modal = document.querySelector(".modal");
   modal.classList.add("open-modal");
 
+  document.querySelector('.modal .close').addEventListener('click', ()=> {
+    removeModal('.modal','open-modal');
+  })
   document.querySelector("#medicine-name").value = medicine.medicinename;
   const medicinecategory = document.querySelector("#category");
   const medicineunit = document.querySelector("#unit");
@@ -203,13 +206,13 @@ document
     const medicinename = document.querySelector("#medicine-name").value;
     const medicinecategory = document.querySelector("#category").value;
     const medicineunit = document.querySelector("#unit").value;
-    const medicinecostunitprice = document.querySelector("#cost-price").value;
+    const medicinecostunitprice = parseFloat(document.querySelector("#cost-price").value)
     const medicinesellingunitprice =
-      document.querySelector("#selling-price").value;
-    const quantity = document.querySelector("#quantity").value;
+      parseFloat(document.querySelector("#selling-price").value);
+    const quantity = parseInt(document.querySelector("#quantity").value);
     const id = document.querySelector(".id").value;
 
-    if(quantity.trim() == ''){
+    if(isNaN(quantity)){
       selectElement(".modal .error").textContent = 'Please quantity cannot be empty';
       selectElement(".modal .error").style.display = "block";
       return;
@@ -245,8 +248,10 @@ document
           "editMedicine"
         );
         const { success, message } = response;
+        console.log(response)
         if (success) {
           selectElement(".error").style.display = "none";
+          removeModal('.modal','open-modal');
 
           Swal.fire({
             title: "Success",
@@ -258,3 +263,6 @@ document
       }
     });
   });
+
+
+  toggleMenu()

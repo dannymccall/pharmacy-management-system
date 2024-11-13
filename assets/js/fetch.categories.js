@@ -24,7 +24,6 @@ async function fetchCategories() {
         // Create a table row dynamically
         const tr = document.createElement("tr");
         const newRecord = `
-              <td>${category.category}</td>
               <td>${category.categoryname}</td>
               <td>
                   <span>
@@ -91,6 +90,7 @@ async function deleteFunction(categoryId) {
           icon: "success",
           confirmButtonText: "OK",
         });
+        clearTableRows(tBody);
         await fetchCategories()
       }
     }
@@ -106,10 +106,6 @@ async function openEditForm(item) {
                   <label for="unitname" class="custom-label" style="font-family:Arial, Helvetica, sans-serif; font-size: 0.8em; width: 20rem;">Category Name:</label>
                   <input type="text" id="categoryname" name="categoryname" value=${item.categoryname} class="custom-input" style="font-family:Arial, Helvetica, sans-serif; padding: 5px; outline: none; border: 1px solid gray; border-radius: 5px; width:50%;">
                 </div>
-                <div style="width:100%;">
-                  <label for="unit" class="unit" style="font-family:Arial, Helvetica, sans-serif; font-size: 0.8em; width: 40rem; margin-right:30px;">Category:</label>
-                  <input type="text" id="category" name="category" value=${item.category} class="custom-input" style="font-family:Arial, Helvetica, sans-serif; padding: 5px; outline: none; border: 1px solid gray; border-radius: 5px;width:50%;">
-                </div>
             </form>
         `,
     focusConfirm: false, // Prevent focus on the confirm button
@@ -119,9 +115,9 @@ async function openEditForm(item) {
   }).then(async (result) => {
     if (result.isConfirmed) {
       const categoryname = selectElementValue("#categoryname");
-      const category = selectElementValue("#category");
+  
       const { id } = item;
-      if (!categoryname || !category) {
+      if (!categoryname) {
         Swal.showValidationMessage(
           "Please enter both category name and category"
         );
@@ -131,7 +127,7 @@ async function openEditForm(item) {
       const response = await makeRequest(
         "../php/category.script.php",
         "PUT",
-        { categoryname, category, id },
+        { categoryname, id },
         "editCategory"
       );
 
@@ -142,8 +138,12 @@ async function openEditForm(item) {
           icon: "success",
           confirmButtonText: "OK",
         });
+        clearTableRows(tBody)
         await fetchCategories();
       }
     }
   });
 }
+
+
+toggleMenu()

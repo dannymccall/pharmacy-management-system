@@ -2,15 +2,11 @@ let currentPage = 1;
 const itemsPerPage = 5;
 let purchasedDate = null;
 
-document.querySelector(".modal .close").addEventListener("click", function () {
-  this.classList.remove("open-modal");
-  // console.log(this.classList)
-});
 document
   .querySelector(".view-modal .close")
   .addEventListener("click", function () {
-    this.classList.remove("open-view-modal");
-    console.log(this.classList);
+    removeModal(".view-modal", "open-view-modal");
+    // console.log(this.classList);
   });
 
 async function fetchInvoiceItems(page) {
@@ -53,6 +49,7 @@ function renderInvoices(invoices) {
     const date = new Date(invoice.dateofsale).toDateString();
     const newRecord = `
       <td class="purchase-date">${date}</td>
+      <td class="purchase-date">${invoice.invoicenumber}</td>
       <td>GHS ${invoice.subtotal.toFixed(2)}</td>
       <td>GHS ${parseFloat(invoice.totalprofit).toFixed(2)}</td>
       <td>GHS ${parseFloat(invoice.amountpaid).toFixed(2)}</td>
@@ -125,14 +122,14 @@ document.getElementById("nextBtn").addEventListener("click", () => {
   fetchInvoice(currentPage);
 });
 
-if (document.querySelector("#prevBtn").disabled) {
-  document.querySelector("#prevBtn").style.background = "#b8b8b8";
-} else {
-  document.querySelector("#prevBtn").style.background = "#1c67c9";
-}
-if (document.querySelector("#nextBtn").disabled) {
-  document.querySelector("#nextBtn").style.background = "#b8b8b8";
-}
+// if (document.querySelector("#prevBtn").disabled) {
+//   document.querySelector("#prevBtn").style.background = "#b8b8b8";
+// } else {
+//   document.querySelector("#prevBtn").style.background = "#1c67c9";
+// }
+// if (document.querySelector("#nextBtn").disabled) {
+//   document.querySelector("#nextBtn").style.background = "#b8b8b8";
+// }
 
 // Delete Invoice
 async function deleteFunction(invoiceId) {
@@ -211,7 +208,12 @@ async function openEditForm(product, purchase) {
 
   const modal = document.querySelector(".modal");
   modal.classList.add("open-modal");
+  document
+    .querySelector(".modal .close")
+    .addEventListener("click", function () {
+      removeModal(".modal", "open-modal");
 
+    });
   document.querySelector(".modal #item-information").value =
     product.item_information;
   document.querySelector(".modal #qty").value = product.quantity;
@@ -326,14 +328,24 @@ async function openEditForm(product, purchase) {
 
 //open view table after click on the view fron invoice table
 async function openViewTable(invoice) {
+  const totalSpan = document.querySelector(".total__span");
+  const quantitySpan = document.querySelector(".quantity__span");
   const viewModal = document.querySelector(".view-modal");
   console.log({ viewModal });
   viewModal.classList.add("open-view-modal");
 
+  document
+    .querySelector(".view-modal .close")
+    .addEventListener("click", function () {
+      this.classList.remove("open-view-modal");
+      // console.log(this.classList)
+      // totalSpan.textContent = ''
+    });
   let subtotal = 0;
   let totalQuantity = 0;
   const tBody = document.querySelector(".view-modal table tbody");
 
+  clearTableRows(tBody);
   // console.log(tBody)
   const products = JSON.parse(invoice.items);
 
@@ -348,12 +360,11 @@ async function openViewTable(invoice) {
   console.log("subtotal: ", subtotal);
   console.log("quantity: ", totalQuantity);
 
-  const totalSpan = document.querySelector(".total__span");
-  const quantitySpan = document.querySelector(".quantity__span");
 
-  totalSpan.textContent += `GHS ${subtotal.toFixed(2)}`;
 
-  quantitySpan.textContent += `${totalQuantity}`;
+  totalSpan.textContent = `GHS ${subtotal.toFixed(2)}`;
+
+  quantitySpan.textContent = `${totalQuantity}`;
   products.map((item) => {
     // Create a table row dynamically
 
@@ -411,7 +422,7 @@ async function deletePurchaseItems(productId, invoice) {
     //   document.querySelector(".view-modal .error").style.display = "none";
     // }, 5000);
     showErrorMessage(
-      ".view-modal",
+      ".view-modal .error",
       "Please there is only one item in the list, try deleting the invoice if you still want to continue with this"
     );
     return;
@@ -436,6 +447,7 @@ async function deletePurchaseItems(productId, invoice) {
 
         // Optionally log the updated products
         console.log(invoice.products);
+        removeModal('.view-modal', 'open-view-modal')
       }
     );
   }
@@ -497,6 +509,9 @@ addNewItemBtn.addEventListener("click", function (e) {
   // date = document.querySelector('.purchase-date').textContent;
 });
 
+document.querySelector('.add-item-modal .close').addEventListener('click', function(){
+  removeModal('.add-item-modal', 'open-add-item-modal');
+})
 document
   .querySelector("#new-add-button-purchase")
   .addEventListener("click", async function (e) {
@@ -551,12 +566,14 @@ document
         console.log({ products });
 
         purchase.newSubTotal = newTotalSub;
+        console.log({purchase})
         purchase.items = JSON.stringify(products);
         console.log({ newTotalSub });
         purchaseToUpdate = purchase;
       }
     });
 
+    console.log({purchaseToUpdate})
     function generateProductId() {
       const length = 7;
       const characters = "1234567890";
@@ -572,6 +589,8 @@ document
       "Are you sure you want insert this purchase",
       () => {
         () => {};
+        removeModal('.add-item-modal', 'open-add-item-modal');
+        removeModal(".modal", "open-modal")
       }
     );
   });
@@ -592,3 +611,6 @@ function debounce(fn, delay) {
     }, delay);
   };
 }
+
+
+toggleMenu()

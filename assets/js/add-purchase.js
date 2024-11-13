@@ -1,5 +1,5 @@
 // Helper function to select elements
-
+const tBody = selectElement("tbody");
 // Calculate the total for a row and update its 'total' field
 function calculateRowTotal(row) {
   const unitPrice = parseFloat(row.querySelector(".unit-price").value) || 0;
@@ -16,12 +16,13 @@ function updateSubTotal() {
     const total = parseFloat(totalField.value) || 0;
     subTotal += total;
   });
-  document.querySelector(".sub__total span").textContent = subTotal.toFixed(2);
+  console.log({subTotal})
+  document.querySelector("p span").textContent = subTotal.toFixed(2);
 }
 
 // Handle adding a new row to the table
 function addNewRow() {
-  const tBody = selectElement("tbody");
+
   const tr = document.createElement("tr");
   tr.classList.add("medicine-row");
 
@@ -118,8 +119,7 @@ document
         icon: "success",
         confirmButtonText: "OK",
       });
-      while(tbody.rows.length > 0)
-        tbody.deleteRow(0);
+      clearTableRows(tBody);
       document.querySelector(".sub__total span").textContent = 0.00;    }
   });
 

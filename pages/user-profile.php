@@ -1,3 +1,5 @@
+<?php include '../includes/auth.php' ?>
+
 <?php
 include '../includes/header.php'
     ?>
@@ -5,6 +7,8 @@ include '../includes/header.php'
 <link rel="stylesheet" href="../assets/css/unit.style.css">
 <link rel="stylesheet" href="../assets/css/add-medicine.style.css">
 <link rel="stylesheet" href="../assets/css/user.profile.style.css">
+<link rel="icon" href="../assets/images/logo2.png" type="image/png">
+
 <?php
 include '../includes/header__rest.php';
 ?>
@@ -39,7 +43,7 @@ include '../includes/header__rest.php';
                     <div class="user__profile" style="align-self: center;">
 
                         <div>
-                            <img src="../assets/images/user_profile.jpg" id="avarta" alt="" srcset="">
+                            <img src="../assets/images/avartablue.png" id="avarta" alt="" srcset="">
                         </div>
                         <div class="edit__section">
                             <img src="../assets/images/edit__profile.png" alt="" onclick="triggerFileInput()">
@@ -81,7 +85,7 @@ include '../includes/header__rest.php';
                                     <h3>Role:</h3>
                                     <p> <?php
                                     if (isset($_SESSION['username'])) {
-                                        echo $_SESSION['user_role'] === 'super_admin' ? 'Super Admin' : '';
+                                        echo $_SESSION['user_role'] === 'super admin' ? 'Super Admin' : 'Sales agent';
                                     }
 
                                     ?></p>
@@ -94,11 +98,10 @@ include '../includes/header__rest.php';
 
                         <div id="Tab2" class="tab-content">
                             <div class="user__security">
-                                <div style="width: 12rem;">
-
+                                <!-- <div style="width: 12rem;">
                                     <button type="button" id="logoutBtn"
                                         style="width:5rem; padding:4px; border-radius:3px;">Logout</button>
-                                </div>
+                                </div> -->
                                 <div style="width:100%">
                                     <p style="margin-left: 32px; font-weight: 600; font-size: 1em">Change Password</p>
                                     <p class="error" style="color:red; width: 65%; text-align:start; font-size: 0.8em;">
@@ -106,10 +109,10 @@ include '../includes/header__rest.php';
                                     <div class="div" style="display:flex; flex-direction: ">
                                         <form action="" method="post" id="changePasswordForm" style="display:flex; flex-direction: column;">
                                             <input type="password" placeholder="Old password" id="old-password"
-                                                style="margin-bottom: 10px; width:80%">
-                                            <input type="password" placeholder="New password" id="new-password"  style="width:80%">
+                                                style="margin-bottom: 10px; width:90%">
+                                            <input type="password" placeholder="New password" id="new-password"  style="width:90%">
                                             <input type="password" placeholder="Confirm new password"
-                                                id="confirm-password"  style="10px; width:80%">
+                                                id="confirm-password"  style="10px; width:90%">
                                             <input type="hidden" name="hidden" id="hidden">
                                             <button type="submit"
                                                 style="margin-top: 10px; border-radius: 2px; position: relative;">Submit</button>
@@ -120,8 +123,21 @@ include '../includes/header__rest.php';
                             </div>
                         </div>
                         <div id="Tab3" class="tab-content">
-                            <h3>Role:</h3>
-                            <p>This is the content of Tab 3.</p>
+                        <div class="table-container">
+                        <table id="itemTable">
+                            <thead>
+                                <tr>
+                                    <th>Activity Date</th>
+                                    <th>Username</th>
+                                    <th>Activity</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table__body">
+
+                            </tbody>
+                        </table>
+                    </div>
+
                         </div>
                     </div>
                 </div>
@@ -139,7 +155,7 @@ include '../includes/header__rest.php';
 <script src="../utils/some-functions.js"></script>
 <script src="../assets/js/sweetalert.min.js"></script>
 <script src="../assets/js/user.profile.js"></script>
-<script src="../assets/js/logout.js"></script>
+
 <?php
 include '../includes/footer.php';
 ?>

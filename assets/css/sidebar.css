@@ -9,14 +9,18 @@
     width: 250px;
     /* height: 100vh; */
     background: #1C3A57;
+    transition: width 0.3s;
+}
 
+.sidebar__collapse {
+    width: 37px;
 }
 
 .sidebar__container .sidebar__user__details {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: center; 
     padding: 10px;
 }
 
@@ -42,9 +46,36 @@
     padding: 10px;
 }
 
-.sidebar__container .sidebar__container__items .sidebar__header img {
+.logo {
     height: 70px;
     width: 70px;
+    transition: width 0.3s;
+}
+
+.avarta {
+    width: 80px;
+    height: 80px;
+    border-radius: 50px;
+    margin-bottom: 10px;
+}
+
+.collapse_logo {
+    height: 20px;
+    width: 20px;
+}
+
+
+
+.side_user {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.remove-user-details {
+    display: none;
 }
 
 .sidebar__container .sidebar__container__items .sidebar__header h1 {
@@ -61,12 +92,17 @@
     padding: 20px;
     display: flex;
     flex-direction: column;
+    transition: padding 0.3s;
+}
+
+.sidebar__collapse__padding {
+    padding: 0;
 }
 
 .sidebar .menu-item-inner-div {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: start;
     width: 12.5rem;
     gap: 12px;
 }
@@ -81,6 +117,7 @@
     position: relative;
     width: 100%;
 }
+
 .menu-item:hover {
     background: #a1c6e9;
 }
@@ -137,7 +174,49 @@
     /* Rotate 90 degrees */
 }
 
-#user_image{
-    width: 100px;
-    height: 100px;
+
+
+.reduce_avarta {
+    height: 20px;
+    width: 20px;
+}
+
+@media only screen and (max-width: 1500px) {
+
+
+    .avarta{
+       width: 70px;
+       height:70px;
+    }
+
+    .menu-item {
+        padding: 12px 7px;
+        cursor: pointer;
+        border-bottom: 1px solid #34495e;
+        transition: background-color 0.3s ease;
+        display: flex;
+        flex-direction: row;
+        position: relative;
+        width: 100%;
+    }
+
+    .menu-item .menu-title{
+        font-size: 0.78em;
+    }
+    
+    .menu-item-inner-div img{
+        width: 14px;
+        height: 14px;
+    }
+    .sidebar__collapse {
+        width: 31px;
+    }
+
+    .reduce_avarta {
+        height: 20px;
+        width: 20px;
+    }
+    .user-credentials{
+        font-size: 0.65em;
+    }
 }

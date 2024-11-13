@@ -21,6 +21,12 @@ async function fetchMedicine(page) {
       medicines.map((medicine) => {
         // Create a table row dynamically
         const tr = document.createElement("tr");
+
+        if (medicine.quantity >= 20) {
+          tr.style.backgroundColor = "#DFF0D8"; // Light green background for high quantity
+        } else {
+          tr.style.backgroundColor = "#F2DEDE"; // Light red background for low quantity
+        }
         const newRecord = `
                 <td style="color:#4A89DC;">${medicine.medicinename}</td>
                 <td>GHS ${medicine.medicinecostunitprice}</td>
@@ -92,3 +98,4 @@ if (document.querySelector("#nextBtn").type === "disabled") {
 }
 
 // Delete function that accepts the unit ID
+toggleMenu()

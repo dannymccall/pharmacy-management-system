@@ -81,7 +81,8 @@ async function deleteFunction(unitId) {
           icon: "success",
           confirmButtonText: "OK",
         });
-        await fetchUnits();
+        clearTableRows(tBody)
+         fetchUnits();
       }
     }
   });
@@ -142,8 +143,11 @@ async function openEditForm(id, unitname, unit) {
             title: "my-customer-title",
           },
         });
-        await fetchUnits()
+        clearTableRows(tBody);
+         fetchUnits()
       }
     }
   });
 }
+
+toggleMenu()

@@ -13,18 +13,17 @@ categoryForm.addEventListener("submit", async function (e) {
   button.style.display = "none";
   loaderDiv.style.display = "block";
   const categoryname = document.querySelector("#category-name").value;
-  const category = document.querySelector("#category").value;
 
 
-  if (categoryname.trim() === "" || category.trim() === "") {
-    errorMessage.textContent = "All fields required";
+
+  if (categoryname.trim() === "" ) {
+    errorMessage.textContent = "Category name required";
     errorMessage.style.display = "block";
     return;
 }
 
   const formData = {
     categoryname,
-    category,
   };
   console.log(formData);
 
@@ -61,3 +60,6 @@ categoryForm.addEventListener("submit", async function (e) {
     });
   }
 });
+
+
+toggleMenu()

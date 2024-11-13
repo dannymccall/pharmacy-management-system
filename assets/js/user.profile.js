@@ -1,3 +1,6 @@
+const tBody = document.querySelector(".table-container .table__body");
+console.log(tBody);
+
 function triggerFileInput() {
   document.querySelector("#file").click();
 }
@@ -114,11 +117,35 @@ document
     );
 
     if (response.success) {
-      showMessage('Hello', response.message, 'success', 'OK', '','', () => {
+      showMessage("Hello", response.message, "success", "OK", "", "", () => {
         this.reset();
-      })
+      });
       window.location.href = "../index.php";
     } else {
       showErrorMessage(".error", response.message);
     }
   });
+
+document.addEventListener("DOMContentLoaded", async function () {
+  const response = await makeRequest(
+    `http://localhost/pharmacy-system/php/userAuthentication.php?username=${username}`,
+    "GET",
+    "",
+    "getUserActivities"
+  );
+  
+  response.userActivity.forEach((activity) => {
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+     <td>${new Date(activity.created_at).toDateString()}</td>
+     <td>${activity.username}</td>
+     <td>${activity.activity}</td>
+    `
+
+    tBody.appendChild(tr)
+  })
+});
+
+
+toggleMenu()

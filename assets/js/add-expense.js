@@ -107,3 +107,4 @@ async function fetchExpenseCategories() {
 }
 
 fetchExpenseCategories();
+toggleMenu()

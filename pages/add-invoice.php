@@ -1,3 +1,6 @@
+<?php include '../includes/auth.php' ?>
+
+
 <?php
 include '../includes/header.php';
 ?>
@@ -5,6 +8,7 @@ include '../includes/header.php';
 <link rel="stylesheet" href="../assets/css/unit.style.css">
 <link rel="stylesheet" href="../assets/css/add-medicine.style.css">
 
+<link rel="icon" href="../assets/images/logo2.png" type="image/png">
 
 <?php
 include '../includes/header__rest.php';
@@ -21,29 +25,37 @@ include '../includes/header__rest.php';
             </div>
             <div class="body__detail__container">
                 <div class="unit__header" style="gap:20px;">
-                    <img src="../assets/images/sale.png" alt="Medicine Image">
-                    <div class="unit__sub__header">
-                        <h1>Invoice</h1>
-                        <h2>invoice / <span>add invoice</span></h2>
+
+                    <div class="unit">
+                        <img src="../assets/images/sale.png" alt="Medicine Image">
+                        <div class="unit__sub__header">
+                            <h1>Invoice</h1>
+                            <h2>invoice / <span>add-invoice</span></h2>
+                        </div>
                     </div>
+                    <a href="../pages/view.invoices.php" class="add__new__unit">
+                        Manage Invoice
+                    </a>
                 </div>
 
                 <div class="form">
                     <h1>New Invoice</h1>
                     <p class="error"></p>
                     <form action="" id="purchaseForm" class="form-flex">
-
-                        <div class="form-input">
-                            <label for="date">Invoice Date</label>
-                            <input type="date" name="invoice-date" style="width: 65%;" id="medicine-name">
-                        </div>
-                        <div class="form-input">
-                            <label for="date">Payment Mode</label>
-                            <select name="paymentMode" id="paymentMode">
-                                <option value="">---Select payment mode---</option>
-                                <option value="momo">Mobile Money</option>
-                                <option value="cash">Cash</option>
-                            </select>
+                        
+                        <div style="width: 100%; display:flex; ">
+                            <div class="form-input">
+                                <label for="date">Invoice Date</label>
+                                <input type="date" name="invoice-date" style="width: 65%;" id="medicine-name">
+                            </div>
+                            <div class="form-input">
+                                <label for="date">Payment Mode</label>
+                                <select name="paymentMode" id="paymentMode" style="width: 65%;">
+                                    <option value="">---Select payment mode---</option>
+                                    <option value="momo">Mobile Money</option>
+                                    <option value="cash">Cash</option>
+                                </select>
+                            </div>
                         </div>
 
                         <!-- <div class="form-input">
@@ -89,7 +101,7 @@ include '../includes/header__rest.php';
                                                     readonly placeholder="Total"></td>
                                             <td>
                                                 <button type="button" style="width: 6rem; background: #fa382a;"
-                                                    class="delete-btn">Delete</button>
+                                                    class="delete-btn">Remove</button>
                                             </td>
 
                                         </tr>
@@ -100,9 +112,9 @@ include '../includes/header__rest.php';
                                 <div class="form-input"
                                     style="display: flex; flex-direction: row; align-items:center; justify-content: space-between;"
                                     id="calculation-div">
-                                    <div class="calculation" style="background: #BDBDBD">
+                                    <div class="calculation">
                                         <button type="button"
-                                            style="background: #6D6E70; font-size: 0.9em; width: 8rem; border-radius: 3px;"
+                                            style="background: #174066; font-size: 0.9em; width: 8rem; border-radius: 3px;"
                                             class="add-new-item">Add New Item</button>
                                         <p class="sub__total">Sub total: <span></span></p>
                                     </div>

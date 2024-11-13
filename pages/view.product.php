@@ -1,9 +1,14 @@
+<?php include '../includes/auth.php' ?>
+
+
 <?php
 include '../includes/header.php'
     ?>
 <link rel="icon" href="assets/images/logo.png" type="image/png">
 <link rel="stylesheet" href="../assets/css/unit.style.css">
 <link rel="stylesheet" href="../assets/css/add-medicine.style.css">
+<link rel="icon" href="../assets/images/logo2.png" type="image/png">
+
 <?php
 include '../includes/header__rest.php';
 ?>
@@ -24,13 +29,13 @@ include '../includes/header__rest.php';
                     <div class="unit">
                         <img src="../assets/images/unit.png" alt="">
                         <div class="unit__sub__header">
-                            <h1>Medicine</h1>
-                            <h2>medicine / <span>manage-medicine</span></h2>
+                            <h1>Product</h1>
+                            <h2>product / <span>manage-product</span></h2>
                         </div>
 
                     </div>
-                    <a href="../pages/add-medicine.php" class="add__new__unit">
-                        Add new medicine
+                    <a href="../pages/add-product.php" class="add__new__unit">
+                        Add new product
                     </a>
                 </div>
                 <!-- <div class="charts">
@@ -48,9 +53,9 @@ include '../includes/header__rest.php';
                         <table id="itemTable">
                             <thead>
                                 <tr>
-                                    <th>Medicine Name</th>
-                                    <th>Medicine Category</th>
-                                    <th>Medicine Unit</th>
+                                    <th>Product Name</th>
+                                    <th>Product Category</th>
+                                    <th>Product Unit</th>
                                     <th> Unit Cost Price</th>
                                     <th> Unit Selling Price</th>
                                     <th> Quantity</th>
@@ -63,11 +68,11 @@ include '../includes/header__rest.php';
                             </tbody>
                         </table>
                         <div class="pagination">
-                            <button id="prevBtn" disabled
-                                style="width: 3rem; height: 30px; font-size: 0.6em; background: #1c67c9;">PREV</button>
+                            <button id="prevBtn" 
+                                style="width: 3rem; height: 30px; font-size: 0.6em; ">PREV</button>
                             <span id="currentPage"></span>
                             <button id="nextBtn"
-                                style="width: 3rem; height: 30px; font-size: 0.6em; background: #1c67c9;">NEXT</button>
+                                style="width: 3rem; height: 30px; font-size: 0.6em; ">NEXT</button>
                         </div>
                     </div>
 
@@ -77,23 +82,23 @@ include '../includes/header__rest.php';
         </div>
     </div>
     <div class="modal">
-        <div class="form" style="width: 70%; height:70%;">
+        <div class="form" style="width: 70%; height:80%;">
             <h1>Edit Medicine</h1>
             <p class="error" style="text-align:center; margin: 5px auto;"></p>
             <form action="" id="medicineForm" class="form-flex">
 
                 <div class="form-input">
-                    <label for="medicine-name">Medicine Name</label>
+                    <label for="medicine-name">Product Name</label>
                     <input type="text" name="medicine-name" id="medicine-name">
                 </div>
 
                 <div class="form-input">
-                    <label for="category">Category</label>
+                    <label for="category">Product Category</label>
                     <select name="category" id="category">
                     </select>
                 </div>
                 <div class="form-input">
-                    <label for="unit">Unit</label>
+                    <label for="unit">Product Unit</label>
                     <select name="unit" id="unit">
                     </select>
                 </div>
@@ -135,7 +140,7 @@ include '../includes/header__rest.php';
 <!-- <script src="../assets/js/add-unit.js"></script> -->
 <script src="../utils/some-functions.js"></script>
 <script src="../assets/js/sweetalert.min.js"></script>
-<script src="../assets/js/fetch-medicine.js"></script>
+<script src="../assets/js/fetch-product.js"></script>
 
 <?php
 include '../includes/footer.php';

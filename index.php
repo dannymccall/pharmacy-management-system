@@ -1,4 +1,5 @@
 <?php
+
 session_set_cookie_params([
     'lifetime' => 60 * 60 * 24 * 7, // 7 hours in seconds
     'path' => '/',
@@ -76,7 +77,7 @@ include __DIR__ . '/includes/header__rest.php';
                     <input type="password" name="password" id="password" placeholder="password">
                     <img src="assets/images/locker_black.png" alt="">
                 </div>
-                <a href="#">Forgot password</a>
+                <a href="./pages/reset-password.php">Forgot password</a>
                 <div class="button__container">
                     <button type="submit">
                         Submit

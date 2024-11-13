@@ -40,6 +40,11 @@ async function search() {
   console.log({ query });
 
   console.log(searchKind);
+
+  if(typeof query === 'string' && query.trim().length === 0){
+    showErrorMessage('.error', 'Please enter a keyword');
+    return;
+  }
   try {
     const response = await fetchDynamicReport(searchKind, query);
     console.log({ response });
@@ -160,3 +165,6 @@ document.querySelector(".new-search").addEventListener("click", function () {
   clearTableRows(summaryBody);
   this.style.display = "none";
 });
+
+
+toggleMenu()

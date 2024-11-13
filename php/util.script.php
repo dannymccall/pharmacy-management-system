@@ -77,12 +77,13 @@ function insertIntoActivity($pdo, $activity, $userId)
 {
     try {
 
-        $stmt = $pdo->prepare("INSERT INTO activitymanagement (activity, userId) VALUES(:activity, :userId)");
+        $stmt = $pdo->prepare("INSERT INTO activitymanagement (activity, userId, date) VALUES(:activity, :userId, :date)");
+        date_default_timezone_set('UTC');
 
-
-
+        $date = date('Y-m-d');
         $stmt->bindParam(':activity', $activity, PDO::PARAM_STR);
         $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+        $stmt->bindParam(':date', $date, PDO::PARAM_STR);
 
         return $stmt->execute();
     } catch (PDOException $e) {
@@ -295,11 +296,11 @@ function fetchFromDatabaseWithCount($pdo, $table, $condition = '', $countOnly = 
 }
 
 
-function fetchFromDatabase($pdo, $table, $columns = '*', $condition = '', $groupBy = '', $orderBy = '', $limit = '', $joinClause='')
+function fetchFromDatabase($pdo, $table, $columns = '*', $condition = '', $groupBy = '', $orderBy = '', $limit = '', $joinClause = '')
 {
     $sql = "SELECT $columns FROM $table";
 
-    if($joinClause){
+    if ($joinClause) {
         $sql .= " $joinClause";
     }
     if ($condition) {
@@ -325,6 +326,63 @@ function fetchFromDatabase($pdo, $table, $columns = '*', $condition = '', $group
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function getExpirationAlert($products, $purchaseID)
+{
+
+    $currentDate = new DateTime();
+    // Retrieve existing notifications from session or initialize as an empty array
+    $notifications = isset($_SESSION['notifications']) ? $_SESSION['notifications'] : [];
+
+    foreach ($products as $product) {
+        $expDate = new DateTime($product['date']);
+        $interval = $currentDate->diff($expDate);
+        $daysUntilExpiration = (int) $interval->format('%r%a');
+
+        // Prepare the notification message based on expiration time
+        $notificationMessage = "";
+        if ($daysUntilExpiration == 7) {
+            $notificationMessage = "{$product['medicineName']} with batch NO:{$product['batchId']} and purchase no: {$purchaseID} will expire in 7 days on " . $expDate->format('Y-m-d');
+        } elseif ($daysUntilExpiration == 3) {
+            $notificationMessage = "{$product['medicineName']} batch NO:{$product['batchId']} and purchase NO: {$purchaseID} will expire in 3 days on " . $expDate->format('Y-m-d');
+        } elseif ($daysUntilExpiration == 0) {
+            $notificationMessage = "{$product['medicineName']} batch NO:{$product['batchId']} and purchase NO: {$purchaseID} expires today on " . $expDate->format('Y-m-d');
+        }
+
+        // Only add the notification if it doesn't already exist in the session
+        if ($notificationMessage && !in_array($notificationMessage, $notifications)) {
+            $notifications[] = $notificationMessage;
+        }
+    }
+
+    $_SESSION['notifications'] = $notifications; // Update session with unique notifications
+    return $notifications;
+}
+
+
+// function getExpirationAlert($products)
+// {
+//     $currentDate = new DateTime();
+//     $notifications = [];
+
+//     foreach ($products as $product) {
+//         $expDate = new DateTime($product['date']);
+//         $interval = $currentDate->diff($expDate);
+//         $daysUntilExpiration = (int) $interval->format('%r%a');
+
+//         // Generate notifications based on days until expiration
+//         if ($daysUntilExpiration == 7) {
+//             $notifications[] = "{$product['medicineName']} will expire in 7 days on " . $expDate->format('Y-m-d');
+//         } elseif ($daysUntilExpiration == 3) {
+//             $notifications[] = "{$product['medicineName']} will expire in 3 days on " . $expDate->format('Y-m-d');
+//         } elseif ($daysUntilExpiration == 0) {
+//             $notifications[] = "{$product['medicineName']} expires today on " . $expDate->format('Y-m-d');
+//         } elseif ($daysUntilExpiration < 0) {
+//             $notifications[] = "{$product['medicineName']} expired on " . $expDate->format('Y-m-d');
+//         }
+//     }
+
+//     return $notifications; // Return all notifications after the loop
+// }
 
 
 // Usage example to get the count of items running low on stock

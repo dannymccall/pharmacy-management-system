@@ -1,5 +1,4 @@
 <?php
-session_start();
 include '../includes/header.php'
     ?>
 <link rel="stylesheet" href="../assets/css/sidebar.css">
@@ -13,27 +12,31 @@ include '../includes/header__rest.php';
             <img src="../assets/images/logo2.png" class="logo" alt="" srcset="">
         </div>
         <div class="sidebar__user__details">
-            <img src="../assets/images/avarta.png" class="logo" alt=""
-                style="width: 50px; height: 50px; border-radius: 50px; margin-bottomL 10px;" id="user_image" srcset="">
-            <input type="hidden" id="username" value="<?php if (isset($_SESSION['username']))
-                echo $_SESSION['username'] ?>">
-                <?php
-            if (isset($_SESSION['username']))
-                echo '<h1 class="user-credentials">' . strtoupper($_SESSION['firstname']) . ' ' . strtoupper($_SESSION['middlename']) . ' ' . strtoupper($_SESSION['lastname']) . '</h1>';
-            if (isset($_SESSION['username'])) {
-                if ($_SESSION['user_role'] === 'super admin')
-                    echo '<h1 class="user-type">super admin</h1>';
-                else
-                    echo '<h1 class="user-type">sales agent</h1>';
-            }
-            ?>
+            <img src="../assets/images/avarta-dark.png" class="avarta" alt="avarta" id="user_image" srcset="">
+            <div class="side_user">
+                <input type="hidden" id="username" value="<?php if (isset($_SESSION['username']))
+                    echo $_SESSION['username'] ?>">
+                    <?php
+                if (isset($_SESSION['username']))
+                    echo '<h1 class="user-credentials">' . strtoupper($_SESSION['firstname']) . ' ' . strtoupper($_SESSION['middlename']) . ' ' . strtoupper($_SESSION['lastname']) . '</h1>';
+                if (isset($_SESSION['username'])) {
+                    if ($_SESSION['user_role'] === 'super admin')
+                        echo '<h1 class="user-type">super admin</h1>';
+                    else
+                        echo '<h1 class="user-type">sales agent</h1>';
+                }
+                ?>
+            </div>
         </div>
         <div class="sidebar">
             <div class="menu-item">
                 <div class="menu-item-inner-div">
                     <img src="../assets/images/dashboard.png" alt="">
-                    <a href="../pages/dashboard.php"
-                        style="font-family: Arial, Helvetica, sans-serif;color: #ecf0f1; font-size:0.8em; width: 100%; z-index:1; height:100%; text-decoration: none;">Dashboard</a>
+
+                    <span class="menu-title">
+                        <a href="../pages/dashboard.php"
+                            style="color:#fff; width: 100%; z-index:-1; height:100%; text-decoration: none;">Dashboard</a>
+                    </span>
                 </div>
             </div>
             <div class="menu-item">
@@ -70,14 +73,14 @@ include '../includes/header__rest.php';
                 <div>
 
                     <div class="menu-item-inner-div">
-                        <img src="../assets/images/medicine.png" alt="">
-                        <span class="menu-title">Medicine</span>
+                        <img src="../assets/images/product.png" alt="">
+                        <span class="menu-title">Product</span>
                     </div>
                     <div class="submenu">
                         <a href="../pages/view.categories.php">Categories</a>
                         <a href="../pages/view.units.php">Units</a>
-                        <a href="../pages/add-medicine.php">Add Medicine</a>
-                        <a href="../pages/view.medicine.php">Manage Medicine</a>
+                        <a href="../pages/add-product.php">Add Product</a>
+                        <a href="../pages/view.product.php">Manage Product</a>
 
                     </div>
 
@@ -133,22 +136,23 @@ include '../includes/header__rest.php';
                 </div>
                 <span class="arrow">&#9662;</span>
             </div>
-            <div class="menu-item">
-                <div>
+            <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'super admin') { ?>
+                <div class="menu-item">
+                    <div>
 
-                    <div class="menu-item-inner-div">
-                        <img src="../assets/images/purchase.png" alt="">
-                        <span class="menu-title">Purchase</span>
+                        <div class="menu-item-inner-div">
+                            <img src="../assets/images/purchase.png" alt="">
+                            <span class="menu-title">Purchase</span>
+                        </div>
+                        <div class="submenu">
+                            <a href="../pages/add-purchase.php">Add Purchase</a>
+                            <a href="../pages/view.purchases.php">Manage Purchase</a>
+                        </div>
                     </div>
-                    <div class="submenu">
-                        <a href="../pages/add-purchase.php">Add Purchase</a>
-                        <a href="../pages/view.purchases.php">Manage Purchase</a>
-                    </div>
+                    <span class="arrow">&#9662;</span>
+
                 </div>
-                <span class="arrow">&#9662;</span>
-
-            </div>
-            <!-- <div class="menu-item">
+                <!-- <div class="menu-item">
                 <div>
                     <div class="menu-item-inner-div">
                         <img src="../assets/images/return.png" alt="">
@@ -162,22 +166,24 @@ include '../includes/header__rest.php';
                 </div>
                 <span class="arrow">&#9662;</span>
             </div> -->
-            <div class="menu-item">
-                <div>
-                    <div class="menu-item-inner-div">
-                        <img src="../assets/images/hrm.png" alt="">
-                        <span class="menu-title">Human Resource</span>
+                <div class="menu-item">
+                    <div>
+                        <div class="menu-item-inner-div">
+                            <img src="../assets/images/hrm.png" alt="">
+                            <span class="menu-title">Human Resource</span>
+                        </div>
+                        <div class="submenu">
+                            <a href="../pages/wisvee.php">WISVEE</a>
+                            <a href="../pages/users.php">Users</a>
+                            <a href="../pages/add-user.php">Add user</a>
+                            <a href="../pages/change-user-password.php">Reset user password</a>
+                        </div>
+
                     </div>
-                    <div class="submenu">
-                        <a href="../pages/wisvee.php">WISVEE</a>
-                        <a href="../pages/users.php">Users</a>
-                        <a href="../pages/add-user.php">Add user</a>
-                    </div>
+                    <span class="arrow">&#9662;</span>
 
                 </div>
-                <span class="arrow">&#9662;</span>
-
-            </div>
+            <?php } ?>
             <div class="menu-item">
                 <div>
                     <div class="menu-item-inner-div">

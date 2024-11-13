@@ -2,6 +2,8 @@
 session_start();
 include '../cors/cors.php';
 include '../db/db.php';
+include './util.script.php';
+
 $method = $_SERVER["REQUEST_METHOD"];
 $service = $_SERVER["HTTP_SERVICE"];
 
@@ -26,6 +28,14 @@ if ($method === 'POST' && $service === 'addUnit') {
             $stmt->bindParam(':unit', $unit);
 
             if ($stmt->execute()) {
+
+                (int) $userId = returnUserId();
+                $insertIntoActivity = insertIntoActivity($pdo, 'Unit addition activity', $userId);
+
+                if (!$insertIntoActivity) {
+                    echo json_encode(['success' => false, 'message' => 'Something happened at activity insertion', $user]);
+                    return;
+                }
                 echo json_encode(['success' => true, 'message' => 'Unit inserted successfully']);
                 return;
             } else {
@@ -73,6 +83,13 @@ if ($method === 'POST' && $service === 'addUnit') {
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         if ($stmt->execute()) {
 
+            (int) $userId = returnUserId();
+            $insertIntoActivity = insertIntoActivity($pdo, 'Unit deletion activity', $userId);
+
+            if (!$insertIntoActivity) {
+                echo json_encode(['success' => false, 'message' => 'Something happened at activity insertion', $user]);
+                return;
+            }
             echo json_encode(['success' => true, 'message' => 'Done']);
             return;
         } else {
@@ -109,6 +126,13 @@ if ($method === 'POST' && $service === 'addUnit') {
 
             if ($stmt->execute()) {
 
+                (int) $userId = returnUserId();
+                $insertIntoActivity = insertIntoActivity($pdo, 'Unit update activity', $userId);
+
+                if (!$insertIntoActivity) {
+                    echo json_encode(['success' => false, 'message' => 'Something happened at activity insertion', $user]);
+                    return;
+                }
                 echo json_encode(['success' => true, 'message' => 'Updated']);
                 return;
             } else {

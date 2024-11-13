@@ -1,15 +1,16 @@
 let currentPage = 1;
 const itemsPerPage = 5;
 let purchasedDate = null;
+  const tBody = selectElement(".table__body");
 
-document.querySelector('.modal').addEventListener('click', function(){
-  this.classList.remove('open-modal')
-  // console.log(this.classList)
-})
+// document.querySelector('.modal .close').addEventListener('click', function(){
+//   removeModal('.modal ')
+//   // console.log(this.classList)
+// })
 document.querySelector('.view-modal .close').addEventListener('click', function(){
-    
-  this.classList.remove('open-view-modal')
-  console.log(this.classList)
+    console.log('hello')
+  // this.classList.remove('open-view-modal')
+  removeModal('.view-modal', 'open-view-modal')
 })
 
 document.addEventListener("DOMContentLoaded", fetchPurchases(currentPage));
@@ -22,7 +23,7 @@ async function fetchPurchases(page) {
       "",
       "fetchPurchases"
     );
-
+    console.log({response})
     const tBody = selectElement(".table__body");
     tBody.innerHTML = "";
 
@@ -41,7 +42,6 @@ async function fetchPurchases(page) {
 }
 
 function renderPurchases(purchases) {
-  const tBody = selectElement(".table__body");
   purchases.forEach((purchase) => {
     const tr = document.createElement("tr");
     const date = new Date(purchase.date).toDateString();
@@ -200,6 +200,9 @@ async function openEditForm(product, purchase) {
   const modal = document.querySelector(".modal");
   modal.classList.add("open-modal");
 
+  document.querySelector('.modal .close').addEventListener('click', function(){
+    removeModal('.modal', 'open-modal')
+  })
   document.querySelector("#medicine-name").value = product.medicineName;
   document.querySelector("#qty").value = product.quantity;
 
@@ -274,25 +277,30 @@ async function openEditForm(product, purchase) {
         "Are you sure you want to edit this purchase again",
         () => {
           let products = JSON.parse(purchase.products);
-
+          console.log({quantity})
           products.map((product) => {
             if (product.productId === productId) {
+              console.log('found')
               product.medicineName = medicineName;
               product.quantity = Number(quantity);
               product.total = Number(total);
               product.unitPrice = Number(unitPrice);
               product.batchId = batchId;
               product.date = date;
+              console.log({product})
             }
-            newTotal += Number(product.total);
-          });
+            // newTotal += Number(product.total);
 
-          newTotal = purchase.products.reduce((accum, curr) => {
+          });
+          console.log(purchase)
+          newTotal = products.reduce((accum, curr) => {
             return accum + Number(curr.total)
           });
 
+          console.log({newTotal})
           purchase.newSubTotal = newTotal;
-          // purchase.products = JSON.stringify(products);
+          purchase.products = JSON.stringify(products);
+          removeModal('.modal', 'open-modal');
         }
       );
       console.log({ purchase });
@@ -301,13 +309,24 @@ async function openEditForm(product, purchase) {
 
 async function openViewTable(purchase) {
   const viewModal = document.querySelector(".view-modal");
+  const totalSpan = document.querySelector(".total__span");
+  const quantitySpan = document.querySelector(".quantity__span");
+
   console.log({ viewModal });
+
   viewModal.classList.add("open-view-modal");
 
   let subtotal = 0;
   let totalQuantity = 0;
   const tBody = document.querySelector(".view-modal table tbody");
-
+   clearTableRows(tBody);
+  document.querySelector('.view-modal .close').addEventListener('click', function(){
+    removeModal('.view-modal open-view-modal');
+    console.log('do')
+    clearTableRows(tBody);
+    totalSpan.textContent = '';
+    quantitySpan.textContent = '';
+  })
   // console.log(tBody)
   const products = JSON.parse(purchase.products);
   console.log(typeof products);
@@ -321,12 +340,11 @@ async function openViewTable(purchase) {
   console.log("subtotal: ", subtotal);
   console.log("quantity: ", totalQuantity);
 
-  const totalSpan = document.querySelector(".total__span");
-  const quantitySpan = document.querySelector(".quantity__span");
 
-  totalSpan.textContent += `GHS ${subtotal.toFixed(2)}`;
 
-  quantitySpan.textContent += `${totalQuantity}`;
+  totalSpan.textContent = `GHS ${subtotal.toFixed(2)}`;
+
+  quantitySpan.textContent = `${totalQuantity}`;
   products.map((product) => {
     // Create a table row dynamically
 
@@ -410,6 +428,10 @@ addNewItemBtn.addEventListener("click", function (e) {
   // date = document.querySelector('.purchase-date').textContent;
 });
 
+document.querySelector('.add-item-modal .close').addEventListener('click', function(){
+  removeModal('.add-item-modal', 'open-add-item-modal');
+  clearTableRows(tBody)
+})
 document
   .querySelector("#new-add-button-purchase")
   .addEventListener("click", async function (e) {
@@ -429,9 +451,7 @@ document
       newItemMecineName.trim().length <= 0 ||
       newQuantity.trim().length <= 0
     ) {
-      errorMessage.textContent = "All fields required";
-      errorMessage.style.display = "block";
-      errorMessage.style.alignSelf = "center";
+      showErrorMessage(".add-item-modal .error", "All fields Required")
       return;
     }
     let purchaseToUpdate = null;
@@ -495,3 +515,6 @@ function debounce(fn, delay) {
     }, delay);
   };
 }
+
+
+toggleMenu()

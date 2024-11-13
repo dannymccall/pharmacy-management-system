@@ -9,9 +9,10 @@ $service = $_SERVER["HTTP_SERVICE"];
 //     echo json_encode(['success' => false, 'message' => 'Unauthorised']);
 
 // } else {
+    $form_data = json_decode(file_get_contents(filename: "php://input"), true);
+
 if ($method === 'POST' && $service === 'addMedicine') {
 
-    $form_data = json_decode(file_get_contents(filename: "php://input"), true);
 
     $medicinename = $form_data['medicinename'] ?? '';
     $medicineunit = $form_data['medicineunit'] ?? '';
@@ -49,6 +50,14 @@ if ($method === 'POST' && $service === 'addMedicine') {
             $stmt->bindParam(':profit', $profit, PDO::PARAM_INT);
             $stmt->bindParam(':collectedquantity', $quantity, PDO::PARAM_INT);
             if ($stmt->execute()) {
+
+                (int) $userId = returnUserId();
+                $insertIntoActivity = insertIntoActivity($pdo, 'New product activity', $userId);
+
+                if (!$insertIntoActivity) {
+                    echo json_encode(['success' => false, 'message' => 'Something happened at activity insertion', $user]);
+                    return;
+                }
                 echo json_encode(['success' => true, 'message' => 'Medicine inserted successfully']);
                 return;
             } else {
@@ -118,7 +127,6 @@ if ($method === 'POST' && $service === 'addMedicine') {
 
 
 } else if ($method === 'DELETE' && $service === 'deleteMedicine') {
-    $form_data = json_decode(file_get_contents(filename: "php://input"), true);
     $id = $form_data['id'];
 
     try {
@@ -127,6 +135,13 @@ if ($method === 'POST' && $service === 'addMedicine') {
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         if ($stmt->execute()) {
 
+            (int) $userId = returnUserId();
+            $insertIntoActivity = insertIntoActivity($pdo, 'Product deletion activity', $userId);
+
+            if (!$insertIntoActivity) {
+                echo json_encode(['success' => false, 'message' => 'Something happened at activity insertion', $user]);
+                return;
+            }
             echo json_encode(['success' => true, 'message' => 'Done']);
             return;
         } else {
@@ -141,7 +156,6 @@ if ($method === 'POST' && $service === 'addMedicine') {
 
 } else if ($method === 'PUT' && $service === 'editMedicine') {
 
-    $form_data = json_decode(file_get_contents(filename: "php://input"), true);
     $medicinename = $form_data['medicinename'] ?? '';
     $medicineunit = $form_data['medicineunit'] ?? '';
     $medicinecategory = $form_data['medicinecategory'] ?? '';
@@ -182,12 +196,18 @@ if ($method === 'POST' && $service === 'addMedicine') {
             $stmt->bindParam(':medicineid', $medicineid, PDO::PARAM_STR);
             $stmt->bindParam(':quantity', $quantity, PDO::PARAM_INT);
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-            $stmt->bindParam(':profit', $profit, PDO::PARAM_INT);
+            $stmt->bindParam(':profit', $profit);
             $stmt->bindParam(':collectedquantity', $collectedquantity, PDO::PARAM_INT);
 
             if ($stmt->execute()) {
+                (int) $userId = returnUserId();
+                $insertIntoActivity = insertIntoActivity($pdo, 'Product update activity', $userId);
 
-                echo json_encode(['success' => true, 'message' => 'Updated']);
+                if (!$insertIntoActivity) {
+                    echo json_encode(['success' => false, 'message' => 'Something happened at activity insertion', $user]);
+                    return;
+                }
+                echo json_encode(['success' => true, 'message' => 'Updated',$form_data, $profit]);
                 return;
             } else {
                 echo json_encode(['success' => false, 'message' => 'Something happened']);

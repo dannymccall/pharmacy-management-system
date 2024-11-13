@@ -2,6 +2,7 @@
 session_start();
 include '../cors/cors.php';
 include '../db/db.php';
+include './util.script.php';
 $method = $_SERVER["REQUEST_METHOD"];
 $service = $_SERVER["HTTP_SERVICE"];
 
@@ -30,6 +31,13 @@ if ($method === 'POST' && $service === 'addExpense') {
             $stmt->bindParam(':description', $description, PDO::PARAM_STR);
 
             if ($stmt->execute()) {
+                (int) $userId = returnUserId();
+                $insertIntoActivity = insertIntoActivity($pdo, 'Expense addition activity', $userId);
+
+                if (!$insertIntoActivity) {
+                    echo json_encode(['success' => false, 'message' => 'Something happened at activity insertion', $user]);
+                    return;
+                }
                 echo json_encode(['success' => true, 'message' => 'Expense inserted successfully']);
                 return;
             } else {
@@ -84,7 +92,13 @@ if ($method === 'POST' && $service === 'addExpense') {
 
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         if ($stmt->execute()) {
+            (int) $userId = returnUserId();
+            $insertIntoActivity = insertIntoActivity($pdo, 'Expense deletion activity', $userId);
 
+            if (!$insertIntoActivity) {
+                echo json_encode(['success' => false, 'message' => 'Something happened at activity insertion', $user]);
+                return;
+            }
             echo json_encode(['success' => true, 'message' => 'Done']);
             return;
         } else {
@@ -128,6 +142,13 @@ if ($method === 'POST' && $service === 'addExpense') {
 
             if ($stmt->execute()) {
 
+                (int) $userId = returnUserId();
+                $insertIntoActivity = insertIntoActivity($pdo, 'Expense update activity', $userId);
+
+                if (!$insertIntoActivity) {
+                    echo json_encode(['success' => false, 'message' => 'Something happened at activity insertion', $user]);
+                    return;
+                }
                 echo json_encode(['success' => true, 'message' => 'Updated']);
                 return;
             } else {

@@ -15,18 +15,20 @@
     gap: 15px;
 }
 
+.form form{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
 .form-input {
     display: flex;
     flex-direction: column;
-    flex: 1 1 45%;
-    /* Allows each input to take up about 45% of the row */
-    min-width: 200px;
-    /* Minimum width to avoid very small inputs */
+   
     gap: 10px;
     margin: 10px;
     position: relative;
+ 
 }
-
 .form-input label {
     margin-bottom: 5px;
     font-size: 16px;
@@ -214,6 +216,22 @@ option:checked {
     transition: color 0.5s linear;
     cursor: pointer;
 }
+.add-item-modal .close {
+    width: 25px;
+    height: 25px;
+    background: #eeeeee;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 1.2em;
+    color: #666666;
+    transition: color 0.5s linear;
+    cursor: pointer;
+}
 
 .modal .close:hover {
     color: #0C0C0C;
@@ -300,7 +318,7 @@ option:checked {
     flex-direction: row;
     gap: 20px;
     margin: 10px;
-    background: #d8edf3;
+    background: #1C3A57;
     padding: 10px;
     border-radius: 5px;
 }
@@ -309,19 +327,23 @@ option:checked {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 0.8em;
     font-weight: 500;
+    color: #fff;
 }
 
 .calculation .calculation__details span {
     font-weight: bold;
+    color: #fff;
 }
 
 .form-input .sub__total {
     font-family: sans-serif;
     font-size: 0.8em;
+    color: #fff;
 }
 
 .form-input .sub__total span {
     font-weight: 600;
+    color: #fff;
 }
 
 .form-input .add-unit-btn,
@@ -382,14 +404,14 @@ option:checked {
 #calculation-div .checkout {
     display: flex;
     flex-direction: column;
-    background: rgb(189, 189, 189);
+    background: #174066;
     width: 13rem;
     height: 13rem;
     position: relative;
 }
 
 #calculation-div .checkout .checkout__header h1 {
-    background: rgb(109, 110, 112);
+    background: #1C3A57;
     color: #f1f1f1;
     padding: 7px;
     text-align: center;
@@ -423,7 +445,7 @@ option:checked {
 #calculation-div .checkout div.balance::after {
    content: '';
    width: 100%;
-   height: 2px;
+   height: 1.5px;
    background: #f1f1f1;
    position: absolute;
    top: 2rem;
@@ -441,18 +463,58 @@ option:checked {
 #calculation-div .checkout input {
    height: 2rem;
    width: 5rem;
-   text-align: right;
+   text-align: left;
 }
 
 #calculation-div p{
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-weight: 400;
+    color: #fff;
 }
 
 #calculation-div .checkout .total-amount,#calculation-div .checkout .change{
     font-weight: 600;
 }
 
+.stock-information{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 50%;
+}
+.stock-information .outOfStock{
+    display: flex;
+    flex-direction: row;
+    width: 50%;
+    align-items: center;
+    margin-left: 20px;
+
+}
+
+.stock-information div{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.stock-information .outOfStock > div:nth-child(1){
+    width: 15px;
+    height: 15px;
+    border-radius: 50px;
+    background: #F2DEDE;
+}
+ .outOfStock > div:nth-child(3){
+    width: 15px;
+    height: 15px;
+    border-radius: 50px;
+    background: #DFF0D8;
+}
+
+.stock-information p{
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 0.8em;
+    font-weight: 700;
+}
 @media print {
     body * {
         visibility: hidden;

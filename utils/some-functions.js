@@ -103,13 +103,22 @@ async function fetchExpenseCategories() {
 }
 
 async function fetchUserDetails(imageId, username) {
-  const response = await makeRequest(
-    `../php/userAuthentication.php?username=${username}`,
-    "GET",
-    "",
-    "fetchDetails"
-  );
-  imageId.src = `../uploads/${response.user.avarta}`;
+
+  let response;
+  if(username !== null){
+     response = await makeRequest(
+      `../php/userAuthentication.php?username=${username}`,
+      "GET",
+      "",
+      "fetchDetails"
+    );
+
+  }
+
+  console.log(response.user)
+  if ( response.user.avarta !== null) {
+    imageId.src = `../uploads/${response.user.avarta}`;
+  }
 }
 
 function displayORRemoveElement(element) {
@@ -132,7 +141,7 @@ function reportSmmary(data, reportType, element) {
         <td class="purchase-date">${date}</td>
         <td> ${item.actiontaker}</td>
         <td>GHS ${item.subtotal.toFixed(2)}</td>
-        <td>GHS ${item.totalProfit}</td>
+        <td>GHS ${item.totalprofit.toFixed(2)}</td>
         <td> ${item.invoicenumber}</td>
         <td> ${item.paymentmode}</td>     
       `;
@@ -161,7 +170,7 @@ function reportSmmary(data, reportType, element) {
                 <td>${item.medicinename}</td>
                 <td>${item.medicinecategory}</td>
                 <td>${item.medicineunit}</td>
-                <td>GHS ${item.medicinecostunitprice}</td>
+                <td>GHS ${Number(item.medicinecostunitprice).toFixed(2)}</td>
                 <td>GHS ${item.medicinesellingunitprice}</td>
                 <td> ${item.quantity}</td>
                  <td>${item.qtysold}</td>
@@ -292,24 +301,33 @@ function clearTableRows(tableBody) {
 
 function logValue(i, data, element, showFormat) {
   setTimeout(() => {
+    // Ensure two decimal precision on display
     document.querySelector(element).innerHTML = showFormat
-      ? `GHS ${i.toFixed(2)}`
-      : i;
+      ? `GHS ${(i.toFixed(2))}`
+      : i.toFixed(0);
+
     if (i < data) {
-      logValue(i + 1, data, element, showFormat); // Recursive call with all parameters
+      // Increment i by a smaller, consistent amount for smooth display
+      const increment = Math.min((data - i) / 100, 0.01); // cap increment for slow, stable increase
+      logValue(i + increment, data, element, showFormat);
     }
-  }, 70);
+  }, 5);
 }
 
+
+
 // Variable to store the current chart instance
+let salesChart;
+let graphReportChart;
 
-
-function drawChart(type, data, labels, labelName, target) {
+function drawSalesChart(type, data, labels, labelName, target) {
   // Check if a chart instance already exists on the canvas and destroy it
 
-
+  if (salesChart) {
+    salesChart.destroy();
+  }
   // Create a new chart instance and store it in the global variable
-  currentChart = new Chart(target, {
+  salesChart = new Chart(target, {
     type: type, // e.g., 'bar', 'pie', etc.
     data: {
       labels: labels,
@@ -333,5 +351,71 @@ function drawChart(type, data, labels, labelName, target) {
       ],
     },
     // Add other options as needed
+  });
+}
+
+function drawGraphReportChart(type, data, labels, labelName, target) {
+  // Check if a chart instance already exists on the canvas and destroy it
+
+  if (graphReportChart) {
+    graphReportChart.destroy();
+  }
+  // Create a new chart instance and store it in the global variable
+  graphReportChart = new Chart(target, {
+    type: type, // e.g., 'bar', 'pie', etc.
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: labelName, // e.g., 'Total Sales ($)'
+          data: data,
+          backgroundColor: [
+            "rgba(75, 192, 192, 0.5)",
+            "rgba(255, 99, 132, 0.6)",
+            "rgba(54, 162, 235, 0.6)",
+            "rgba(255, 206, 86, 0.6)",
+          ],
+          borderColor: [
+            "rgba(75, 192, 192, 1)",
+            "rgba(255, 99, 132, 1)",
+            "rgba(54, 162, 235, 1)",
+          ],
+          borderWidth: 1,
+        },
+      ],
+    },
+    // Add other options as needed
+  });
+}
+
+function toggleMenu() {
+  document.querySelector("#menu").addEventListener("click", () => {
+    const sideBarContainer = document.querySelector(".sidebar__container");
+    const logo = document.querySelector(".logo");
+    const sidebar = document.querySelector(".sidebar");
+    const avarta = document.querySelector(".avarta");
+    const sideBarUserDetails = document.querySelector(".side_user");
+
+    // console.log('logo',logo)
+    if (sideBarContainer) {
+      sideBarContainer.classList.toggle("sidebar__collapse"); // Use a class to control width
+    }
+    if (logo) {
+      logo.classList.toggle("collapse_logo");
+    }
+
+    if (sidebar) {
+      sidebar.classList.toggle("sidebar__collapse__padding");
+    }
+
+    if (avarta) {
+      console.log(avarta);
+      avarta.classList.toggle("reduce_avarta");
+    }
+
+    if (sideBarUserDetails) {
+      console.log(sideBarUserDetails);
+      sideBarUserDetails.classList.toggle("remove-user-details");
+    }
   });
 }

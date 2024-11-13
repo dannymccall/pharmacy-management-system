@@ -190,11 +190,11 @@ document
           );
           return false;
         }
-        
+
         const response = await makeRequest(
           "../php/category.script.php",
           "POST",
-          { categoryname, category},
+          { categoryname, category },
           "addCategory"
         );
 
@@ -209,3 +209,8 @@ document
       }
     });
   });
+
+toggleMenu();
+// document.querySelector('#menu').addEventListener("click", () => {
+//   document.querySelector('.sidebar__container ').style.width = '50px';
+// })

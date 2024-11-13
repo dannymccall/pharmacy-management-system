@@ -18,6 +18,13 @@ if ($method === 'GET' && $service === 'searchInvoice') {
         $searchResults = searchItem($pdo, 'invoices', $keyword);
 
         if (!empty($searchResults)) {
+            (int) $userId = returnUserId();
+            $insertIntoActivity = insertIntoActivity($pdo, 'Invoice search activity', $userId);
+
+            if (!$insertIntoActivity) {
+                echo json_encode(['success' => false, 'message' => 'Something happened at activity insertion', $user]);
+                return;
+            }
             echo json_encode(['success' => true, 'searchResults' => $searchResults]);
             return;
         } else {
@@ -33,6 +40,14 @@ if ($method === 'GET' && $service === 'searchInvoice') {
         $searchResults = searchItem($pdo, 'medicines', $keyword);
 
         if (!empty($searchResults)) {
+
+            (int) $userId = returnUserId();
+            $insertIntoActivity = insertIntoActivity($pdo, 'Medicine search activity', $userId);
+
+            if (!$insertIntoActivity) {
+                echo json_encode(['success' => false, 'message' => 'Something happened at activity insertion', $user]);
+                return;
+            }
             echo json_encode(['success' => true, 'searchResults' => $searchResults]);
             return;
         } else {
@@ -50,6 +65,13 @@ if ($method === 'GET' && $service === 'searchInvoice') {
         $searchResults = searchItem($pdo, 'activitymanagement', $keyword, $joinClause);
 
         if (!empty($searchResults)) {
+            (int) $userId = returnUserId();
+            $insertIntoActivity = insertIntoActivity($pdo, 'User search activity', $userId);
+
+            if (!$insertIntoActivity) {
+                echo json_encode(['success' => false, 'message' => 'Something happened at activity insertion', $user]);
+                return;
+            }
             echo json_encode(['success' => true, 'searchResults' => $searchResults]);
             return;
         } else {

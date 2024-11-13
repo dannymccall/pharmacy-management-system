@@ -1,3 +1,6 @@
+<?php include '../includes/auth.php' ?>
+
+
 <?php
 include '../includes/header.php';
 ?>
@@ -5,6 +8,7 @@ include '../includes/header.php';
 <link rel="stylesheet" href="../assets/css/unit.style.css">
 <link rel="stylesheet" href="../assets/css/add-medicine.style.css">
 
+<link rel="icon" href="../assets/images/logo2.png" type="image/png">
 
 <?php
 include '../includes/header__rest.php';

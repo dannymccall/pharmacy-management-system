@@ -38,7 +38,11 @@ if ($method === 'POST' && $service === 'addInvoice') {
             $stmt->execute();
             $medicine = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if (!$medicine || $medicine['quantity'] < $row['quantity']) {
+            if (!$medicine) {
+                echo json_encode(['success' => false, 'message' => 'This product is not available in stock.']);
+                return;
+            }
+            if ($medicine['quantity'] < $row['quantity']) {
                 echo json_encode(['success' => false, 'message' => 'Requested quantity exceeds available stock.']);
                 return;
             }
@@ -80,6 +84,14 @@ if ($method === 'POST' && $service === 'addInvoice') {
 
         if ($stmt->execute()) {
             $pdo->commit();
+
+            (int) $userId = returnUserId();
+            $insertIntoActivity = insertIntoActivity($pdo, 'New invoice activity', $userId);
+
+            if (!$insertIntoActivity) {
+                echo json_encode(['success' => false, 'message' => 'Something happened at activity insertion', $user]);
+                return;
+            }
             echo json_encode(['success' => true, 'message' => 'Invoice added successfully', 'data' => $form_data]);
             return;
         } else {
@@ -91,17 +103,17 @@ if ($method === 'POST' && $service === 'addInvoice') {
     }
 
 
-} else if ($method === 'GET' && 'fetchInvoices') {
+} else if ($method === 'GET' && $service === 'fetchInvoices') {
 
     try {
         $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
-        $items_per_page = 5;
+        $items_per_page = 10;
         $offset = ($page - 1) * $items_per_page;
 
         $result = $pdo->query("SELECT COUNT(*) as count FROM invoices");
         $total_items = $result->fetch()['count'];
 
-        $stmt = $pdo->prepare("SELECT * FROM invoices LIMIT :offset, :items_per_page");
+        $stmt = $pdo->prepare("SELECT * FROM invoices ORDER BY DATE(dateofsale) DESC  LIMIT :offset, :items_per_page");
         $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
         $stmt->bindParam(':items_per_page', $items_per_page, PDO::PARAM_INT);
         $stmt->execute();
@@ -155,6 +167,13 @@ if ($method === 'POST' && $service === 'addInvoice') {
         $stmt = $pdo->prepare("DELETE FROM invoices WHERE id = :id");
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         if ($stmt->execute()) {
+            (int) $userId = returnUserId();
+            $insertIntoActivity = insertIntoActivity($pdo, 'Invoice deletion activity', $userId);
+
+            if (!$insertIntoActivity) {
+                echo json_encode(['success' => false, 'message' => 'Something happened at activity insertion', $user]);
+                return;
+            }
             echo json_encode(['success' => true, 'message' => 'Invoice deleted successfully']);
         } else {
             echo json_encode(['success' => false, 'message' => 'Failed to delete invoice']);
@@ -178,6 +197,7 @@ if ($method === 'POST' && $service === 'addInvoice') {
 
     try {
         foreach ($items as $item) {
+
             if (isset($item->oldQuantity)) {
 
                 if ($item->quantity > $item->oldQuantity) {
@@ -237,6 +257,7 @@ if ($method === 'POST' && $service === 'addInvoice') {
                 }
 
             } else {
+
                 $medicineData = fetchMedicineData($pdo, $item->item_information);
 
                 if ($medicineData) {
@@ -274,6 +295,13 @@ if ($method === 'POST' && $service === 'addInvoice') {
             $stmt->bindParam(':totalprofit', $profitReCalculated);
             if ($stmt->execute()) {
                 writeDynamicToFile("/var/pharmacy/", ['success' => true, 'message' => 'Updated', 'data' => $profitReCalculated]);
+                (int) $userId = returnUserId();
+                $insertIntoActivity = insertIntoActivity($pdo, 'Invoice update activity', $userId);
+
+                if (!$insertIntoActivity) {
+                    echo json_encode(['success' => false, 'message' => 'Something happened at activity insertion', $user]);
+                    return;
+                }
                 echo json_encode(['success' => true, 'message' => 'Updated', 'data' => $totalProfit]);
                 return;
             } else {
@@ -289,4 +317,31 @@ if ($method === 'POST' && $service === 'addInvoice') {
         return;
     }
 
+} else if ($method === 'GET' && $service === 'getRecentSales') {
+
+    $page = isset($_GET['page']) ? $_GET['page'] : 1;
+    $items_per_page = 5;
+    $offset = ($page - 1) * $items_per_page;
+    date_default_timezone_set('UTC');
+
+    $today = date('Y-m-d');
+    $result = $pdo->query("SELECT COUNT(*) AS count FROM invoices WHERE DATE(created_at) = '$today'");
+
+    $total_items = $result->fetch()['count'];
+
+    $stmt = $pdo->prepare("SELECT * FROM invoices WHERE DATE(created_at) = '$today' ORDER BY DATE(created_at)  DESC  LIMIT :offset, :items_per_page");
+    $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+    $stmt->bindParam(':items_per_page', $items_per_page, PDO::PARAM_INT);
+    $stmt->execute();
+
+
+    $todaySales = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    echo json_encode([
+        'success' => true,
+        'todaySales' => $todaySales,
+        'total_items' => $total_items,
+        'items_per_page' => $items_per_page,
+        'current_page' => $page
+    ]);
 }

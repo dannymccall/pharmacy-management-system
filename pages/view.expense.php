@@ -1,9 +1,13 @@
+<?php include '../includes/auth.php' ?>
+
 <?php
 include '../includes/header.php'
     ?>
 <link rel="icon" href="assets/images/logo.png" type="image/png">
 <link rel="stylesheet" href="../assets/css/unit.style.css">
 <link rel="stylesheet" href="../assets/css/add-medicine.style.css">
+<link rel="icon" href="../assets/images/logo2.png" type="image/png">
+
 <?php
 include '../includes/header__rest.php';
 ?>
@@ -61,11 +65,11 @@ include '../includes/header__rest.php';
                             </tbody>
                         </table>
                         <div class="pagination">
-                            <button id="prevBtn" disabled
-                                style="width: 3rem; height: 30px; font-size: 0.6em; background: #1c67c9;">PREV</button>
+                            <button id="prevBtn" 
+                                style="width: 3rem; height: 30px; font-size: 0.6em;">PREV</button>
                             <span id="currentPage"></span>
                             <button id="nextBtn"
-                                style="width: 3rem; height: 30px; font-size: 0.6em; background: #1c67c9;">NEXT</button>
+                                style="width: 3rem; height: 30px; font-size: 0.6em;">NEXT</button>
                         </div>
                     </div>
 

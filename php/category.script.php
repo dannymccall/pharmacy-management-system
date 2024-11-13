@@ -2,6 +2,7 @@
 session_start();
 include '../cors/cors.php';
 include '../db/db.php';
+include './util.script.php';
 $method = $_SERVER["REQUEST_METHOD"];
 $service = $_SERVER["HTTP_SERVICE"];
 
@@ -9,21 +10,29 @@ $service = $_SERVER["HTTP_SERVICE"];
 //     echo json_encode(['success' => false, 'message' => 'Unauthorised']);
 
 // } else {
+    $form_data = json_decode(file_get_contents(filename: "php://input"), true);
+
 if ($method === 'POST' && $service === 'addCategory') {
 
-    $form_data = json_decode(file_get_contents(filename: "php://input"), true);
     $categoryname = $form_data['categoryname'] ?? '';
-    $category = $form_data['category'] ?? '';
 
-    if (!empty(trim($categoryname)) || !empty(trim($category))) {
+
+    if (!empty(trim($categoryname))) {
         try {
 
-            $stmt = $pdo->prepare("INSERT INTO categories (categoryname, category) VALUES( :categoryname, :category)");
+            $stmt = $pdo->prepare("INSERT INTO categories (categoryname) VALUES( :categoryname)");
 
             $stmt->bindParam(':categoryname', $categoryname);
-            $stmt->bindParam(':category', $category);
+
 
             if ($stmt->execute()) {
+                (int) $userId = returnUserId();
+                $insertIntoActivity = insertIntoActivity($pdo, 'Category addition activity', $userId);
+
+                if (!$insertIntoActivity) {
+                    echo json_encode(['success' => false, 'message' => 'Something happened at activity insertion', $user]);
+                    return;
+                }
                 echo json_encode(['success' => true, 'message' => 'Category inserted successfully']);
                 return;
             } else {
@@ -56,7 +65,6 @@ if ($method === 'POST' && $service === 'addCategory') {
 
 
 } else if ($method === 'DELETE' && $service === 'deleteCategory') {
-    $form_data = json_decode(file_get_contents(filename: "php://input"), true);
     $id = $form_data['id'];
 
     try {
@@ -65,6 +73,13 @@ if ($method === 'POST' && $service === 'addCategory') {
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         if ($stmt->execute()) {
 
+            (int) $userId = returnUserId();
+            $insertIntoActivity = insertIntoActivity($pdo, 'Category deletion activity', $userId);
+
+            if (!$insertIntoActivity) {
+                echo json_encode(['success' => false, 'message' => 'Something happened at activity insertion', $user]);
+                return;
+            }
             echo json_encode(['success' => true, 'message' => 'Done']);
             return;
         } else {
@@ -80,8 +95,7 @@ if ($method === 'POST' && $service === 'addCategory') {
 } else if ($method === 'PUT' && $service === 'editCategory') {
 
     $form_data = json_decode(file_get_contents(filename: "php://input"), true);
-    $categoryname = $form_data['category'] ?? '';
-    $category = $form_data['categoryname'] ?? '';
+    $categoryname = $form_data['categoryname'] ?? '';
     $id = $form_data['id'];
 
     $id = (int) $id;
@@ -92,15 +106,21 @@ if ($method === 'POST' && $service === 'addCategory') {
         $unitdb = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!empty($unitdb)) {
-            $sql = "UPDATE categories SET categoryname = :categoryname, category = :category WHERE id = :id";
+            $sql = "UPDATE categories SET categoryname = :categoryname WHERE id = :id";
             $stmt = $pdo->prepare($sql);
 
             $stmt->bindParam(":categoryname", $categoryname, PDO::PARAM_STR);
-            $stmt->bindParam(":category", $category, PDO::PARAM_STR);
             $stmt->bindParam(":id", $id, PDO::PARAM_INT);
 
             if ($stmt->execute()) {
 
+                (int) $userId = returnUserId();
+                $insertIntoActivity = insertIntoActivity($pdo, 'Category update activity', $userId);
+
+                if (!$insertIntoActivity) {
+                    echo json_encode(['success' => false, 'message' => 'Something happened at activity insertion', $user]);
+                    return;
+                }
                 echo json_encode(['success' => true, 'message' => 'Updated']);
                 return;
             } else {

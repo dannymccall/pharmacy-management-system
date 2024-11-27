@@ -53,11 +53,7 @@ include '../includes/header__rest.php';
                         <div class="button-section">
                             <button type="submit">Submit</button>
                         </div>
-                        <div class="button-section">
-                            <div class="loader__div" style="display:none;">
-                                <?php include '../components/loader.php' ?>
-                            </div>
-                        </div>
+                       
                     </form>
 
                 </div>

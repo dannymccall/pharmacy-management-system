@@ -2,6 +2,8 @@ let currentPage = 1;
 const itemsPerPage = 5;
 let purchasedDate = null;
 
+document.addEventListener("DOMContentLoaded", fetchInvoice(currentPage));
+
 document
   .querySelector(".view-modal .close")
   .addEventListener("click", function () {
@@ -9,9 +11,11 @@ document
     // console.log(this.classList);
   });
 
-async function fetchInvoiceItems(page) {
+async function fetchInvoiceItems(page, searchQuery = "") {
   const response = await makeRequest(
-    `../php/invoice.script.php?page=${page}`,
+    `../php/invoice.script.php?page=${page}&search=${encodeURIComponent(
+      searchQuery
+    )}`,
     "GET",
     "",
     "fetchInvoices"
@@ -19,11 +23,29 @@ async function fetchInvoiceItems(page) {
   console.log(response);
   return response;
 }
-document.addEventListener("DOMContentLoaded", fetchInvoice(currentPage));
+
+document.getElementById("searchBtn").addEventListener("click", () => {
+  const searchQuery = document.getElementById("searchQuery").value.trim();
+  document.getElementById("searchQuery").value = "";
+  console.log({ searchQuery });
+  currentPage = 1; // Reset to the first page for search results
+  fetchInvoice(currentPage, searchQuery);
+});
+
+// Enable search on pressing Enter in the search input
+document.getElementById("searchQuery").addEventListener("keypress", (e) => {
+  if (e.key === "Enter") {
+    const searchQuery = document.getElementById("searchQuery").value.trim();
+    document.getElementById("searchQuery").value = "";
+    currentPage = 1; // Reset to the first page for search results
+    fetchInvoice(currentPage, searchQuery);
+  }
+});
 let dbPurchases = null;
-async function fetchInvoice(page) {
+
+async function fetchInvoice(page, searchQuery="") {
   try {
-    const response = await fetchInvoiceItems(page);
+    const response = await fetchInvoiceItems(page,searchQuery);
 
     const tBody = selectElement(".table__body");
     tBody.innerHTML = "";
@@ -212,7 +234,6 @@ async function openEditForm(product, purchase) {
     .querySelector(".modal .close")
     .addEventListener("click", function () {
       removeModal(".modal", "open-modal");
-
     });
   document.querySelector(".modal #item-information").value =
     product.item_information;
@@ -360,8 +381,6 @@ async function openViewTable(invoice) {
   console.log("subtotal: ", subtotal);
   console.log("quantity: ", totalQuantity);
 
-
-
   totalSpan.textContent = `GHS ${subtotal.toFixed(2)}`;
 
   quantitySpan.textContent = `${totalQuantity}`;
@@ -447,7 +466,7 @@ async function deletePurchaseItems(productId, invoice) {
 
         // Optionally log the updated products
         console.log(invoice.products);
-        removeModal('.view-modal', 'open-view-modal')
+        removeModal(".view-modal", "open-view-modal");
       }
     );
   }
@@ -509,9 +528,11 @@ addNewItemBtn.addEventListener("click", function (e) {
   // date = document.querySelector('.purchase-date').textContent;
 });
 
-document.querySelector('.add-item-modal .close').addEventListener('click', function(){
-  removeModal('.add-item-modal', 'open-add-item-modal');
-})
+document
+  .querySelector(".add-item-modal .close")
+  .addEventListener("click", function () {
+    removeModal(".add-item-modal", "open-add-item-modal");
+  });
 document
   .querySelector("#new-add-button-purchase")
   .addEventListener("click", async function (e) {
@@ -566,14 +587,14 @@ document
         console.log({ products });
 
         purchase.newSubTotal = newTotalSub;
-        console.log({purchase})
+        console.log({ purchase });
         purchase.items = JSON.stringify(products);
         console.log({ newTotalSub });
         purchaseToUpdate = purchase;
       }
     });
 
-    console.log({purchaseToUpdate})
+    console.log({ purchaseToUpdate });
     function generateProductId() {
       const length = 7;
       const characters = "1234567890";
@@ -589,8 +610,8 @@ document
       "Are you sure you want insert this purchase",
       () => {
         () => {};
-        removeModal('.add-item-modal', 'open-add-item-modal');
-        removeModal(".modal", "open-modal")
+        removeModal(".add-item-modal", "open-add-item-modal");
+        removeModal(".modal", "open-modal");
       }
     );
   });
@@ -612,5 +633,4 @@ function debounce(fn, delay) {
   };
 }
 
-
-toggleMenu()
+toggleMenu();

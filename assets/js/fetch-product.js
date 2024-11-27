@@ -3,9 +3,31 @@ const itemsPerPage = 5;
 
 document.addEventListener("DOMContentLoaded", fetchMedicine(currentPage));
 
-async function fetchMedicine(page) {
+document.getElementById("searchBtn").addEventListener("click", () => {
+  const searchQuery = document.getElementById("searchQuery").value.trim();
+  document.getElementById("searchQuery").value = "";
+
+  console.log({searchQuery})
+  currentPage = 1; // Reset to the first page for search results
+  fetchMedicine(currentPage, searchQuery);
+});
+
+// Enable search on pressing Enter in the search input
+document.getElementById("searchQuery").addEventListener("keypress", (e) => {
+  if (e.key === "Enter") {
+    const searchQuery = document.getElementById("searchQuery").value.trim();
+    document.getElementById("searchQuery").value = "";
+
+    currentPage = 1; // Reset to the first page for search results
+    fetchMedicine(currentPage, searchQuery);
+  }
+});
+
+async function fetchMedicine(page,searchQuery = "") {
   const response = await makeRequest(
-    `../php/medicine.script.php?page=${page}`,
+    `../php/medicine.script.php?page=${page}&search=${encodeURIComponent(
+      searchQuery
+    )}`,
     "GET",
     "",
     "fetchMedicines"
@@ -68,7 +90,7 @@ async function fetchMedicine(page) {
         });
       });
     } else {
-      const noRecord = `<td style="text-align:center; font-family:Arial, Helvetica, sans-serif; font-size: 0.8em" colSpan="7">No Medicines</td>`;
+      const noRecord = `<td style="text-align:center; font-family:Arial, Helvetica, sans-serif; font-size: 0.8em" colSpan="7">No Products</td>`;
       const tr = document.createElement("tr");
       tr.innerHTML = noRecord;
       tBody.appendChild(tr);
@@ -133,9 +155,9 @@ async function openEditForm(medicine) {
   const modal = document.querySelector(".modal");
   modal.classList.add("open-modal");
 
-  document.querySelector('.modal .close').addEventListener('click', ()=> {
-    removeModal('.modal','open-modal');
-  })
+  document.querySelector(".modal .close").addEventListener("click", () => {
+    removeModal(".modal", "open-modal");
+  });
   document.querySelector("#medicine-name").value = medicine.medicinename;
   const medicinecategory = document.querySelector("#category");
   const medicineunit = document.querySelector("#unit");
@@ -206,19 +228,22 @@ document
     const medicinename = document.querySelector("#medicine-name").value;
     const medicinecategory = document.querySelector("#category").value;
     const medicineunit = document.querySelector("#unit").value;
-    const medicinecostunitprice = parseFloat(document.querySelector("#cost-price").value)
-    const medicinesellingunitprice =
-      parseFloat(document.querySelector("#selling-price").value);
+    const medicinecostunitprice = parseFloat(
+      document.querySelector("#cost-price").value
+    );
+    const medicinesellingunitprice = parseFloat(
+      document.querySelector("#selling-price").value
+    );
     const quantity = parseInt(document.querySelector("#quantity").value);
     const id = document.querySelector(".id").value;
 
-    if(isNaN(quantity)){
-      selectElement(".modal .error").textContent = 'Please quantity cannot be empty';
+    if (isNaN(quantity)) {
+      selectElement(".modal .error").textContent =
+        "Please quantity cannot be empty";
       selectElement(".modal .error").style.display = "block";
       return;
-    }else{
+    } else {
       selectElement(".error").style.display = "none";
-
     }
     const formData = {
       medicinename,
@@ -248,10 +273,10 @@ document
           "editMedicine"
         );
         const { success, message } = response;
-        console.log(response)
+        console.log(response);
         if (success) {
           selectElement(".error").style.display = "none";
-          removeModal('.modal','open-modal');
+          removeModal(".modal", "open-modal");
 
           Swal.fire({
             title: "Success",
@@ -264,5 +289,4 @@ document
     });
   });
 
-
-  toggleMenu()
+toggleMenu();

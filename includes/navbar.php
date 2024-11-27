@@ -32,7 +32,7 @@
                                     foreach ($_SESSION['notifications'] as $notification) {
                                         echo "<div style='border-radius: 0;' class='message'>";
                                         echo "<div></div>";
-                                        echo "<p style='color: red; font-weight: bold;'>{$notification}</p>";
+                                        echo "<p style='color: red; font-weight: bold; text-align:center;'>{$notification}</p>";
                                         echo "</div>";
                                     } else {
                                     echo "<p>No notifications available.</p>";

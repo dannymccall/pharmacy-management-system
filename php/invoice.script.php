@@ -104,40 +104,72 @@ if ($method === 'POST' && $service === 'addInvoice') {
 
 
 } else if ($method === 'GET' && $service === 'fetchInvoices') {
-
-    try {
+  
         $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
         $items_per_page = 10;
+        $search = isset($_GET['search']) ? trim(string: $_GET['search']) : '';
+
         $offset = ($page - 1) * $items_per_page;
 
-        $result = $pdo->query("SELECT COUNT(*) as count FROM invoices");
-        $total_items = $result->fetch()['count'];
-
-        $stmt = $pdo->prepare("SELECT * FROM invoices ORDER BY DATE(dateofsale) DESC  LIMIT :offset, :items_per_page");
-        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
-        $stmt->bindParam(':items_per_page', $items_per_page, PDO::PARAM_INT);
-        $stmt->execute();
-
-        $invoices = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($invoices as &$invoice) {
-            $invoiceItems = json_decode($invoice['items']);
-            foreach ($invoiceItems as $item) {
-                $item->oldQuantity = $item->quantity;
-            }
-            $invoice['items'] = json_encode($invoiceItems);
+        // Validate numeric values
+        if (!is_int($offset) || !is_int($items_per_page)) {
+            echo json_encode(['success' => false, 'message' => 'Invalid pagination values']);
+            exit;
         }
-        unset($invoice);
-        echo json_encode([
-            'success' => true,
-            'invoices' => $invoices,
-            'total_items' => $total_items,
-            'items_per_page' => $items_per_page,
-            'current_page' => $page
-        ]);
-    } catch (PDOException $e) {
-        echo json_encode(['success' => false, 'message' => 'Error fetching invoices: ' . $e->getMessage()]);
-    }
 
+        $query = "SELECT * FROM invoices";
+        $params = [];
+
+        if (!empty($search)) {
+            $query .= " WHERE invoicenumber LIKE :search";
+            $params[':search'] = '%' . $search . '%'; // Bind search parameter
+        }
+
+        $query .= " ORDER BY DATE(dateofsale) DESC LIMIT $offset, $items_per_page";
+
+        try{
+            $stmt = $pdo->prepare($query);
+            $stmt->execute($params);
+            $invoices = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            $totalQuery = "SELECT COUNT(*) as count FROM invoices";
+            $totalParams = [];
+            if (!empty($search)) {
+                $totalQuery .= " WHERE invoicenumber LIKE :search";
+                $totalParams[':search'] = '%' . $search . '%';
+            }
+
+            $totalStmt = $pdo->prepare($totalQuery);
+            $totalStmt->execute($totalParams);
+            $totalItems = $totalStmt->fetch(PDO::FETCH_ASSOC)['count'];
+    
+            
+            // $stmt = $pdo->prepare("SELECT * FROM invoices ORDER BY DATE(dateofsale) DESC  LIMIT :offset, :items_per_page");
+            // $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+            // $stmt->bindParam(':items_per_page', $items_per_page, PDO::PARAM_INT);
+            // $stmt->execute();
+    
+            foreach ($invoices as &$invoice) {
+                $invoiceItems = json_decode($invoice['items']);
+                foreach ($invoiceItems as $item) {
+                    $item->oldQuantity = $item->quantity;
+                }
+                $invoice['items'] = json_encode($invoiceItems);
+            }
+            unset($invoice);
+            echo json_encode([
+                'success' => true,
+                'invoices' => $invoices,
+                'total_items' => $totalItems,
+                'items_per_page' => $items_per_page,
+                'current_page' => $page
+            ]);
+        }catch(PDOException $e) {
+            echo json_encode([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ]);
+        }
 
 } else if ($method === 'DELETE' && $service === 'deleteInvoice') {
     $form_data = json_decode(file_get_contents(filename: "php://input"), true);

@@ -20,6 +20,12 @@ if ($method === 'POST' && $service === 'addCategory') {
     if (!empty(trim($categoryname))) {
         try {
 
+            $condition = "WHERE categoryname = '$categoryname'";
+            $fetchCateogory = fetchFromDatabaseWithCount($pdo, 'categories', $condition);
+            if(!empty($fetchCateogory)){
+                echo json_encode(['success' => false, 'message' => 'Category already exists', ]);
+                return;
+            }
             $stmt = $pdo->prepare("INSERT INTO categories (categoryname) VALUES( :categoryname)");
 
             $stmt->bindParam(':categoryname', $categoryname);

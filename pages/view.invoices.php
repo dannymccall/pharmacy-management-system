@@ -34,8 +34,13 @@ include '../includes/header__rest.php';
                         </div>
 
                     </div>
-                    <a href="../pages/add-invoice.php" class="add__new__unit" style="font-size: 0.8em; width: 12rem; border-radius:2px;">
-                        <img src="../assets/images/add.png" alt="">
+                    <div class="search-container">
+                        <input type="text" id="searchQuery" class="search-input" placeholder="Search Medicines">
+                        <button id="searchBtn" class="search-button">
+                            <img src="../assets/images/search-product.png" style="width:20px; height:20px;"  alt=""> <!-- Font Awesome Search Icon -->
+                        </button>
+                    </div>
+                    <a href="../pages/add-invoice.php" class="add__new__unit" style="font-size: 0.8em; width: 14rem; border-radius:2px;">
                         Add new invoice
                     </a>
                 </div>

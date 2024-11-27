@@ -2,7 +2,7 @@
 session_start();
 include '../cors/cors.php';
 include './util.script.php';
-
+include '../db/db.php';
 $method = $_SERVER["REQUEST_METHOD"];
 $service = $_SERVER["HTTP_SERVICE"];
 
@@ -19,7 +19,7 @@ if ($method === 'POST' && $service === 'userLogin') {
     }
 
     try {
-        include '../db/db.php';
+       
         $stmt = $pdo->prepare("SELECT * FROM users WHERE username = :username");
 
         $stmt->bindParam(':username', $user__name);
@@ -92,11 +92,19 @@ if ($method === 'POST' && $service === 'userLogin') {
     }
 
     try {
+
+       
         $password = generatePassword(12);
         (string) $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         (string) $username = generateUsername($firstname, $lastname, $middlename);
         $pdo->beginTransaction();
 
+        $condition = "WHERE username = '$username'";
+        $fetchUser = fetchFromDatabaseWithCount($pdo, 'users', $condition);
+        if(!empty($fetchUser)){
+            echo json_encode(['success' => false, 'message' => 'User already exists', ]);
+            return;
+        }
         // $stmt = $pdo->query("SELECT * FROM users WHERE username = $username  ");
         // $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -139,7 +147,7 @@ if ($method === 'POST' && $service === 'userLogin') {
 } else if ($method === 'GET' && $service === 'fetchUsers') {
 
     $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
-    $items_per_page = 5;
+    $items_per_page = 10;
     $offset = ($page - 1) * $items_per_page;
 
     $result = $pdo->query("SELECT COUNT(*) as count FROM users");

@@ -1,5 +1,26 @@
 const expenseForm = document.querySelector("#expenseForm");
+const expenseSelect = document.querySelector("#expense-category");
 
+
+async function fetchExpenseCategories() {
+  const response = await makeRequest(
+    "../php/expense.category.script.php",
+    "GET",
+    "",
+    "fetchExpenseCategories"
+  );
+  console.log(response);
+
+  response.expensecategories.forEach((category) => {
+    const expenseOption = document.createElement("option");
+    expenseOption.value = category.categoryname;
+    expenseOption.textContent = category.categoryname;
+
+    expenseSelect.appendChild(expenseOption);
+  });
+}
+
+fetchExpenseCategories();
 expenseForm.addEventListener("submit", async function (e) {
   e.preventDefault();
 
@@ -8,6 +29,7 @@ expenseForm.addEventListener("submit", async function (e) {
   const purpose = document.querySelector("#purpose").value;
   const total = document.querySelector("#total").value;
   const expenseDescription = document.querySelector("#expenseDescription").value;
+
 
   const formData = {
     expenseDate,
@@ -59,11 +81,6 @@ document
       if (result.isConfirmed) {
         const categoryname = document.querySelector("#categoryname").value;
 
-        // if (!unitname || !unit) {
-        //   Swal.showValidationMessage("Please enter both unit name and unit");
-        //   return false;
-        // }
-
         const response = await makeRequest(
           "../php/expense.script.php",
           "POST",
@@ -72,7 +89,8 @@ document
         );
 
         if (response.success) {
-          fetchExpenseCategories();
+          expenseSelect.innerHTML = '';
+         await  fetchExpenseCategories();
           Swal.fire({
             title: "Success",
             text: response.message,
@@ -87,24 +105,5 @@ document
     });
   });
 
-async function fetchExpenseCategories() {
-  const response = await makeRequest(
-    "../php/expense.category.script.php",
-    "GET",
-    "",
-    "fetchExpenseCategories"
-  );
-  console.log(response);
-  const expenseSelect = document.querySelector("#expense-category");
 
-  response.expensecategories.forEach((category) => {
-    const expenseOption = document.createElement("option");
-    expenseOption.value = category.categoryname;
-    expenseOption.textContent = category.categoryname;
-
-    expenseSelect.appendChild(expenseOption);
-  });
-}
-
-fetchExpenseCategories();
 toggleMenu()

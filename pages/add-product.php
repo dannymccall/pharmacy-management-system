@@ -33,6 +33,7 @@ include '../includes/header__rest.php';
                         </div>
 
                     </div>
+                    
                     <a href="./view.product.php" class="add__new__unit" style="border-radius: 2px;">
                         Manage Product
                     </a>
@@ -87,11 +88,7 @@ include '../includes/header__rest.php';
                             <button type="submit">Submit</button>
                         </div>
 
-                        <div class="form-input">
-                            <div class="loader__div" style="display:none;">
-                                <?php include '../components/loader.php'; ?>
-                            </div>
-                        </div>
+                       
                     </form>
                 </div>
 

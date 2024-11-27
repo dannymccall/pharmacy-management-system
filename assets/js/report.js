@@ -14,7 +14,24 @@ const detail = document.querySelector("#summaryBody");
 const header = document.querySelector(".header");
 const reportKind = document.querySelector("#reportType").value;
 const reportSummaryBody = document.querySelector("#report-summaryBody");
+const userSelection = document.querySelector("#select-user");
 
+async function fetchUsers() {
+ const response =await makeRequest("../php/userAuthentication.php", "GET", "", "fetchUsers");
+  console.log(response)
+ if(response.success && response.users.length > 0){
+  response.users.forEach(user => {
+    const optionElement = document.createElement('option');
+    optionElement.value = user.username;
+    optionElement.text = user.username;
+
+    userSelection.appendChild(optionElement);
+  });
+ }
+
+}
+
+fetchUsers();
 async function fetchDynamicReport(body, reportType) {
   return await makeRequest(
     `../php/generate_report.php`,
@@ -39,7 +56,7 @@ reportForm.addEventListener("submit", async function (e) {
   const filterBy = document.querySelector("#filter-by").value
     ? document.querySelector("#filter-by").value
     : null;
-
+  const user = userSelection.value ? userSelection.value : null;
   if (new Date(startDate) > new Date(endDate)) {
     showErrorMessage(".error", "End date should be after start date");
     return;
@@ -50,6 +67,7 @@ reportForm.addEventListener("submit", async function (e) {
     startDate,
     endDate,
     filterBy,
+    user
   };
   console.log(formData);
   try {
@@ -133,7 +151,7 @@ reportForm.addEventListener("submit", async function (e) {
         document.querySelector(".printBtn").style.display = "none";
         displayNoReports(
           tableContainer,
-          "No Sale Report for the given periods"
+          "No Report for the given parameters"
         );
       }
     }
@@ -162,5 +180,4 @@ document.querySelector(".new-report").addEventListener("click", function () {
   this.style.display = "none";
 });
 
-
-toggleMenu()
+toggleMenu();

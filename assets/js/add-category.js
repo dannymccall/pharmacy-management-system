@@ -1,6 +1,6 @@
 const button = selectElement("button");
 const categoryForm = selectElement("#categoryForm");
-const loaderDiv = selectElement(".loader__div");
+// const loaderDiv = selectElement(".loader__div");
 let errorMessage = selectElement(".error");
 
 // button.addEventListener('click', () => {
@@ -11,7 +11,7 @@ categoryForm.addEventListener("submit", async function (e) {
   e.preventDefault();
 
   button.style.display = "none";
-  loaderDiv.style.display = "block";
+  // loaderDiv.style.display = "block";
   const categoryname = document.querySelector("#category-name").value;
 
 
@@ -38,9 +38,8 @@ categoryForm.addEventListener("submit", async function (e) {
 
   console.log(reponse);
   if (!success) {
-    errorMessage.textContent = message;
-    errorMessage.style.display = "block";
-    loaderDiv.style.display = "none";
+    showErrorMessage('.error', message)
+    // loaderDiv.style.display = "none";
     button.style.display = "block";
   } else {
     errorMessage.style.display = "none";

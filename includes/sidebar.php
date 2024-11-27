@@ -61,7 +61,7 @@ include '../includes/header__rest.php';
                         <span class="menu-title">Search</span>
                     </div>
                     <div class="submenu">
-                        <a href="../pages/medicine-search.php">Medicine</a>
+                        <a href="../pages/product-search.php">Product</a>
                         <a href="../pages/invoice-search.php">Invoice</a>
                         <a href="../pages/user.search.php">User</a>
                     </div>

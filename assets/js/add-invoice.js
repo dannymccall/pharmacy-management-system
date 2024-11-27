@@ -4,10 +4,10 @@ let select = selectElement(".table__body select");
 
 async function fetchMedicines() {
   const response = await makeRequest(
-    `../php/medicine.script.php`,
+    `../php/fetchAllMedicine.php`,
     "GET",
     "",
-    "fetchMedicines"
+    "fetchAllMedicine"
   );
 
   return response;
@@ -15,6 +15,7 @@ async function fetchMedicines() {
 
 async function insertOption() {
   const response = await fetchMedicines();
+  console.log({response})
   createOptionElement(response, document, select);
 }
 

@@ -2,6 +2,7 @@
 include '../cors/cors.php';
 include '../db/db.php';
 include './util.script.php';
+session_start();
 $method = $_SERVER["REQUEST_METHOD"];
 $service = $_SERVER["HTTP_SERVICE"];
 
@@ -45,14 +46,14 @@ if ($method === 'POST' && $service === 'addPurchase') {
 
         // Execute the statement and check for success
         if ($stmt->execute()) {
-            (int) $userId = returnUserId();
+             $userId = returnUserId();
             $insertIntoActivity = insertIntoActivity($pdo, 'New purchase activity', $userId);
 
             if (!$insertIntoActivity) {
-                echo json_encode(['success' => false, 'message' => 'Something happened at activity insertion', $user]);
+                echo json_encode(['success' => false, 'message' => 'Something happened at activity insertion']);
                 return;
             }
-            echo json_encode(['success' => true, 'message' => 'Purchased successfully']);
+            echo json_encode(['success' => true, 'message' => 'Purchased successfully', $userId]);
             return;
         } else {
             echo json_encode(['success' => false, 'message' => 'Purchase failed. Please try again.']);
@@ -68,7 +69,7 @@ if ($method === 'POST' && $service === 'addPurchase') {
 } else if ($method === 'GET' && 'fetchPurchases') {
 
     $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
-    $items_per_page = 5;
+    $items_per_page = 10;
     $offset = ($page - 1) * $items_per_page;
 
     $result = $pdo->query("SELECT COUNT(*) as count FROM purchases");

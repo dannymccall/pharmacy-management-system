@@ -49,7 +49,7 @@ include '../includes/header__rest.php';
                             <canvas id="prescription-data" width="400" height="200"></canvas>
                             <canvas id="operation-data" width="400" height="200"></canvas>
                         </div> -->
-                    <div style="width:100%; height:100%; padding:20px;">
+                    <div style="width:100%; height:100%; padding:20px; margin-bottom:20rem;">
                         <div class="body__information">
                             <div class="body__information__details" id="expense">
                                 <div class="design"></div>
@@ -91,7 +91,7 @@ include '../includes/header__rest.php';
                                 </div>
                                 <p>Total Purchases</p>
                             </div>
-                            <div class="navigators">
+                            <div class="navigators" style="margin-bottom:20rem;">
                                 <a class="navigator-item" href="../pages/add-invoice.php">
                                     <span>
                                         <img src="../assets/images/invoice-dark.png" alt="">

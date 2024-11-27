@@ -1,4 +1,5 @@
 <?php
+
 include '../db/db.php';
 function generateCode($length): string
 {
@@ -126,19 +127,28 @@ function fetchUser($pdo, $username)
 }
 
 
-function generateReport($pdo, $startDate, $endDate, $filterBy, $table)
+function generateReport($pdo, $startDate, $endDate, $filterBy, $table, $user)
 {
     try {
         $sql = '';
         $stmt = null;
 
-        if (!empty($filterBy) && !empty($startDate) && !empty($endDate)) {
+        if (!empty($filterBy) && !empty($startDate) && !empty($endDate) && !empty($user)) {
             // If filter, startDate, and endDate are provided
-            $sql = "SELECT * FROM $table WHERE created_at BETWEEN :startDate AND :endDate AND paymentmode = :filterBy";
+            $sql = "SELECT * FROM $table WHERE created_at BETWEEN :startDate AND :endDate AND paymentmode = :filterBy AND actiontaker = :user";
             $stmt = $pdo->prepare($sql);
             $stmt->bindParam(':startDate', $startDate, PDO::PARAM_STR);
             $stmt->bindParam(':endDate', $endDate, PDO::PARAM_STR);
             $stmt->bindParam(':filterBy', $filterBy, PDO::PARAM_STR);
+            $stmt->bindParam(':user', $user, PDO::PARAM_STR);
+        } elseif (!empty($startDate) && !empty($endDate) && !empty($user)) {
+            // If only startDate and endDate are provided
+            $sql = "SELECT * FROM $table WHERE created_at BETWEEN :startDate AND :endDate AND actiontaker = :user";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(':startDate', $startDate, PDO::PARAM_STR);
+            $stmt->bindParam(':endDate', $endDate, PDO::PARAM_STR);
+            $stmt->bindParam(':user', $user, PDO::PARAM_STR);
+
         } elseif (!empty($startDate) && !empty($endDate)) {
             // If only startDate and endDate are provided
             $sql = "SELECT * FROM $table WHERE created_at BETWEEN :startDate AND :endDate";
@@ -150,6 +160,11 @@ function generateReport($pdo, $startDate, $endDate, $filterBy, $table)
             $stmt = $pdo->prepare($sql);
 
             $stmt->bindParam(':filterBy', $filterBy, PDO::PARAM_STR);
+        } else if (!empty($user)) {
+            $sql = "SELECT * FROM $table WHERE actiontaker = :user";
+            $stmt = $pdo->prepare($sql);
+
+            $stmt->bindParam(':user', $user, PDO::PARAM_STR);
         } else {
             // If no filter, startDate, or endDate is provided
             $sql = "SELECT * FROM $table";
@@ -174,9 +189,9 @@ function generateReport($pdo, $startDate, $endDate, $filterBy, $table)
 
 
 
-function returnUserId(): int
+function returnUserId()
 {
-    (int) $userId = isset($_SESSION['id']) ? $_SESSION['id'] : null;
+     $userId = isset($_SESSION['id']) ? $_SESSION['id'] : null;
     return $userId;
 }
 

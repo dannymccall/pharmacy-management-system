@@ -28,7 +28,7 @@ if ($method === 'GET' && $service === 'searchInvoice') {
             echo json_encode(['success' => true, 'searchResults' => $searchResults]);
             return;
         } else {
-            echo json_encode('nothing');
+            echo json_encode(['success' => true, 'searchResults' => []]);
         }
     } catch (PDOException $e) {
         echo 'Something happened ' . $e->getMessage();
@@ -51,7 +51,7 @@ if ($method === 'GET' && $service === 'searchInvoice') {
             echo json_encode(['success' => true, 'searchResults' => $searchResults]);
             return;
         } else {
-            echo json_encode('nothing');
+            echo json_encode(['success' => true, 'searchResults' => []]);
         }
     } catch (PDOException $e) {
         echo 'Something happened ' . $e->getMessage();
@@ -75,7 +75,7 @@ if ($method === 'GET' && $service === 'searchInvoice') {
             echo json_encode(['success' => true, 'searchResults' => $searchResults]);
             return;
         } else {
-            echo json_encode('nothing');
+            echo json_encode(['success' => true, 'searchResults' => []]);
         }
     } catch (PDOException $e) {
         echo 'Something happened ' . $e->getMessage();

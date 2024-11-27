@@ -1,6 +1,6 @@
 const button = selectElement("button");
 const medicineForm = selectElement("#medicineForm");
-const loaderDiv = selectElement(".loader__div");
+// const loaderDiv = selectElement(".loader__div");
 let errorMessage = selectElement(".error");
 
 // button.addEventListener('click', () => {
@@ -10,38 +10,50 @@ let errorMessage = selectElement(".error");
 const selectCategory = selectElement("#category");
 const selectUnit = selectElement("#unit");
 
-const url = "../php/category.script.php";
+function createOptionRow(value, textContent, element) {
+  const option = document.createElement("option");
+  option.value = value;
+  option.textContent = textContent;
+  element.appendChild(option);
+}
 
-document.addEventListener("DOMContentLoaded", async function () {
-  const response = await makeRequest(`${url}`, "GET", "", "fetchCategory");
-  response.categories.map((item) => {
-    const option = document.createElement("option");
-    option.value = item.category;
-    option.textContent = item.category;
-    selectCategory.appendChild(option);
-  });
-});
-
-document.addEventListener("DOMContentLoaded", async function () {
-  const response = await makeRequest(
-    `../php/unit.script.php`,
+async function fetchCategories() {
+  return await makeRequest(
+    `../php/category.script.php`,
     "GET",
     "",
-    "fetchUnits"
+    "fetchCategory"
   );
-  response.units.map((item) => {
-    const option = document.createElement("option");
-    option.value = item.unit;
-    option.textContent = item.unit;
-    selectUnit.appendChild(option);
+}
+
+async function fetchUnit() {
+  return await makeRequest(`../php/unit.script.php`, "GET", "", "fetchUnits");
+}
+
+const c = async () => {
+  const categoriesResponse = await fetchCategories();
+  categoriesResponse.categories.map((item) => {
+    createOptionRow(item.categoryname, item.categoryname, selectCategory);
   });
+};
+
+const u = async () => {
+  const unitResponse = await fetchUnit();
+  unitResponse.units.map((item) => {
+    createOptionRow(item.unit, item.unit, selectUnit);
+  });
+};
+
+document.addEventListener("DOMContentLoaded", async function () {
+  c();
+  u();
 });
 
 medicineForm.addEventListener("submit", async function (e) {
   e.preventDefault();
 
   button.style.display = "none";
-  loaderDiv.style.display = "block";
+  // loaderDiv.style.display = "block";
 
   const medicinename = document.querySelector("#medicine-name").value;
   const medicinecategory = document.querySelector("#category").value;
@@ -72,9 +84,9 @@ medicineForm.addEventListener("submit", async function (e) {
 
   console.log(reponse);
   if (!success) {
-    errorMessage.textContent = message;
-    errorMessage.style.display = "block";
-    loaderDiv.style.display = "none";
+    showErrorMessage(".error", message);
+    scrollTo({ behavior: "smooth" });
+    // loaderDiv.style.display = "none";
     button.style.display = "block";
   } else {
     errorMessage.style.display = "none";
@@ -89,8 +101,8 @@ medicineForm.addEventListener("submit", async function (e) {
       reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed)
-        window.location.href = "../pages/add-medicine.php";
-      else window.location.href = "../pages/view.medicine.php";
+        window.location.href = "../pages/add-product.php";
+      else window.location.href = "../pages/view.product.php";
     });
   }
 });
@@ -145,6 +157,8 @@ document
         );
 
         if (response.success) {
+          selectUnit.innerHTML = '';
+          u();
           Swal.fire({
             title: "Success",
             text: response.message,
@@ -170,10 +184,7 @@ document
                   <label for="unitname" class="custom-label" style="font-family:Arial, Helvetica, sans-serif; font-size: 0.8em; width: 20rem;">Category Name:</label>
                   <input type="text" id="categoryname" name="categoryname"  class="custom-input" style="font-family:Arial, Helvetica, sans-serif; padding: 5px; outline: none; border: 1px solid gray; border-radius: 5px; width:50%;">
                 </div>
-                <div style="width:100%;">
-                  <label for="unit" class="unit" style="font-family:Arial, Helvetica, sans-serif; font-size: 0.8em; width: 40rem; margin-right:30px;">Category:</label>
-                  <input type="text" id="category" name="category"  class="custom-input" style="font-family:Arial, Helvetica, sans-serif; padding: 5px; outline: none; border: 1px solid gray; border-radius: 5px;width:50%;">
-                </div>
+            
             </form>
         `,
       focusConfirm: false, // Prevent focus on the confirm button
@@ -183,8 +194,7 @@ document
     }).then(async (result) => {
       if (result.isConfirmed) {
         const categoryname = selectElementValue("#categoryname");
-        const category = document.querySelector("input[name='category']").value;
-        if (!categoryname || !category) {
+        if (!categoryname ) {
           Swal.showValidationMessage(
             "Please enter both category name and category"
           );
@@ -194,11 +204,13 @@ document
         const response = await makeRequest(
           "../php/category.script.php",
           "POST",
-          { categoryname, category },
+          { categoryname },
           "addCategory"
         );
 
         if (response.success) {
+          selectCategory.innerHTML = '';
+          c();
           Swal.fire({
             title: "Success",
             text: response.message,

@@ -57,6 +57,12 @@ include '../includes/header__rest.php';
                                     <option value="cash">Cash payment</option>
                                 </select>
                             </div>
+                            <div class="form-input" id="endDateDiv">
+                                <label for="user-selection">Select User</label>
+                                <select name="select-user" id="select-user">
+                                    <option value="">---Select User---</option>
+                                </select>
+                            </div>
 
                         </div>
                         <div class="form-input">

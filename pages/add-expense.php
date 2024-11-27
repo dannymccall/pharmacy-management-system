@@ -67,15 +67,11 @@ include '../includes/header__rest.php';
                             <label for="total">Total</label>
                             <input type="number" step="any" name="total" id="total" />
                         </div>
-                        <div class="form-input textarea">
+                        <div class="form-input textarea" style="width: 79%;">
                             <label for="description">Description</label>
                             <textarea id="expenseDescription" name="description" rows="10" cols="50"
                                 placeholder="Enter details of the expense..."></textarea>
 
-                        </div>
-                        <div class="form-input" style="visibility: hidden;">
-                            <label for="sellingprice">Total</label>
-                            <input type="number" step="any" name="selling-price" id="selling-price" />
                         </div>
 
 
@@ -83,11 +79,7 @@ include '../includes/header__rest.php';
                             <button type="submit">Submit</button>
                         </div>
 
-                        <div class="form-input">
-                            <div class="loader__div" style="display:none;">
-                                <?php include '../components/loader.php'; ?>
-                            </div>
-                        </div>
+                     
                     </form>
                 </div>
 

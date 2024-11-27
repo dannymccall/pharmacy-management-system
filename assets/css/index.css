@@ -456,3 +456,8 @@ table tr:hover {
         height: 30px;
     }
 }
+@media only screen and (max-width: 1450px) {
+    .body__information__section{
+        margin-top: 10rem;
+    }
+}

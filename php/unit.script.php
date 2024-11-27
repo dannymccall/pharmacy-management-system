@@ -21,6 +21,13 @@ if ($method === 'POST' && $service === 'addUnit') {
 
 
         try {
+            
+            $condition = "WHERE unitname = '$unitname' OR unit = '$unit'";
+            $fetchUnit = fetchFromDatabaseWithCount($pdo, 'units', $condition);
+            if(!empty($fetchUnit)){
+                echo json_encode(['success' => false, 'message' => 'Unit already exists', ]);
+                return;
+            }
 
             $stmt = $pdo->prepare("INSERT INTO units (unitname, unit) VALUES( :unitname, :unit)");
 

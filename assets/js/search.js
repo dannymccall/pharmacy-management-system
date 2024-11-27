@@ -28,7 +28,9 @@ let totalProducts = 0;
 let totalAmount = 0;
 let quantity = 0;
 let totalQuantity = 0;
+
 async function search() {
+  tableContainer.style.display = 'none';
   clearTableRows(detailsBody);
   clearTableRows(summaryBody);
   const query = document.getElementById("searchInput").value;
@@ -60,12 +62,11 @@ async function search() {
         document.querySelector(".new-search").style.display = "block";
         header.textContent = "---Search Results---";
       }, 1000);
-      if (typeof searchResults !== undefined) {
+      if (searchResults && searchResults.length > 0) {
         console.log({ searchResults });
 
         const user = searchResults[0];
 
-        console.log(user);
         if (searchKind === "searchUser") {
           reportSmmary(searchResults[0], searchKind, summaryBody);
         } else {
@@ -132,11 +133,13 @@ async function search() {
         summaryPara.style.display = "none";
         circularMotion.style.display = "none";
 
-        document.querySelector(".printBtn").style.display = "none";
+        // document.querySelector(".printBtn").style.display = "none";
         displayNoReports(
           tableContainer,
-          "No Sale Report for the given periods"
+          "No Search found"
         );
+        document.querySelector('.report-summary').style.display = 'none';
+        document.querySelector('.printBtn').style.display = 'none';
       }
     }
   } catch (error) {
@@ -144,10 +147,10 @@ async function search() {
   }
 }
 
-document.querySelector(".printBtn").addEventListener("click", function () {
-  printTableContent("table-container");
-  this.style.display = "none";
-});
+// document.querySelector(".printBtn").addEventListener("click", function () {
+//   printTableContent("table-container");
+//   this.style.display = "none";
+// });
 
 document.querySelector(".new-search").addEventListener("click", function () {
   header.textContent = "Generate New Search";
@@ -155,12 +158,6 @@ document.querySelector(".new-search").addEventListener("click", function () {
   totalAmount = 0;
   displayORRemoveElement(formInput);
   displayORRemoveElement(generateBtn);
-  // while (detailsBody.rows.length > 0) {
-  //   detailsBody.deleteRow(0);
-  // }
-  // while (summaryBody.rows.length > 0) {
-  //   summaryBody.deleteRow(0);
-  // }
   clearTableRows(detailsBody);
   clearTableRows(summaryBody);
   this.style.display = "none";

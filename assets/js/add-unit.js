@@ -1,6 +1,6 @@
 const button = selectElement("button");
 const unitForm = selectElement("#unitForm");
-const loaderDiv = selectElement(".loader__div");
+// const loaderDiv = selectElement(".loader__div");
 let errorMessage = selectElement(".error");
 
 // button.addEventListener('click', () => {
@@ -11,7 +11,7 @@ unitForm.addEventListener("submit", async function (e) {
   e.preventDefault();
 
   button.style.display = "none";
-  loaderDiv.style.display = "block";
+  // loaderDiv.style.display = "block";
 
   const unitname = document.querySelector("#unit-name").value;
   const unit = document.querySelector("#unit").value;
@@ -34,7 +34,7 @@ unitForm.addEventListener("submit", async function (e) {
   if (!success) {
     errorMessage.textContent = message;
     errorMessage.style.display = "block";
-    loaderDiv.style.display = "none";
+    // loaderDiv.style.display = "none";
     button.style.display = "block";
   } else {
     errorMessage.style.display = "none";

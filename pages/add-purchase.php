@@ -37,7 +37,6 @@ include '../includes/header__rest.php';
                     <h1>Add Purchase</h1>
                     <p class="error"></p>
                     <form action="" id="purchaseForm" class="form-flex">
-
                         <div style="width: 100%; display:flex;">
                             <div class="form-input">
                                 <label for="date">Purchased Date</label>
@@ -115,11 +114,7 @@ include '../includes/header__rest.php';
                             <button type="submit">Submit</button>
                         </div>
 
-                        <div class="form-input">
-                            <div class="loader__div" style="display:none;">
-                                <?php include '../components/loader.php'; ?>
-                            </div>
-                        </div>
+                      
                     </form>
                 </div>
 

@@ -9,7 +9,7 @@ $service = $_SERVER["HTTP_SERVICE"];
 //     echo json_encode(['success' => false, 'message' => 'Unauthorised']);
 
 // } else {
-    $form_data = json_decode(file_get_contents(filename: "php://input"), true);
+$form_data = json_decode(file_get_contents(filename: "php://input"), true);
 
 if ($method === 'POST' && $service === 'addMedicine') {
 
@@ -27,8 +27,11 @@ if ($method === 'POST' && $service === 'addMedicine') {
         !empty(trim($medicinecostunitprice)) || !empty(trim($medicinesellingunitprice)) && !empty(trim($quantity))
     ) {
         try {
-
-
+            $product = fetchMedicineData($pdo, $medicinename);
+            if (!empty($product)) {
+                echo json_encode(['success' => false, 'message' => 'Product already exist']);
+                return;
+            }
             $stmt = $pdo->prepare("INSERT INTO medicines (medicinename, medicinecategory, medicineunit, medicinecostunitprice, medicinesellingunitprice, medicineid, quantity, unitprofit, collectedquantity) 
             VALUES(:medicinename, :medicinecategory, :medicineunit, :medicinecostunitprice, :medicinesellingunitprice, :medicineid, :quantity, :profit, :collectedquantity)");
 
@@ -36,6 +39,7 @@ if ($method === 'POST' && $service === 'addMedicine') {
 
             (string) $code = generateCode(7);
             $medicineid .= $code;
+
 
             $profit = (float) ($medicinesellingunitprice - $medicinecostunitprice);
 
@@ -73,58 +77,64 @@ if ($method === 'POST' && $service === 'addMedicine') {
         return;
     }
 } else if ($method === 'GET' && 'fetchMedicine') {
-
-    (int) $page = null;
-
     $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
-    $items_per_page = 5;
-    $offset = ($page - 1) * $items_per_page;
+    $itemsPerPage = 10; // Adjust per your needs
+    $search = isset($_GET['search']) ? trim(string: $_GET['search']) : '';
 
-        $result = $pdo->query("SELECT COUNT(*) as count FROM medicines");
-        $total_items = $result->fetch()['count'];
+    // Calculate offset
+    $offset = ($page - 1) * $itemsPerPage;
 
-
-        $stmt = $pdo->prepare("SELECT * FROM medicines LIMIT $offset, $items_per_page");
-
-        if ($stmt->execute()) {
-
-            $medicines = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            if (!empty($medicines)) {
-                echo json_encode([
-                    'success' => true,
-                    'medicines' => $medicines,
-                    'total_items' => $total_items,
-                    'items_per_page' => $items_per_page,
-                    'current_page' => $page
-                ]);
-                return;
-            } else {
-                echo json_encode(['success' => true, 'medicines' => []]);
-                return;
-            }
-        
-
-    } else {
-        $stmt = $pdo->prepare("SELECT * FROM medicines");
-        if ($stmt->execute()) {
-
-            $medicines = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            if (!empty($medicines)) {
-                echo json_encode([
-                    'success' => true,
-                    'medicines' => $medicines,
-                ]);
-                return;
-            } else {
-                echo json_encode(['success' => true, 'medicines' => []]);
-                return;
-            }
-        }
+    // Validate numeric values
+    if (!is_int($offset) || !is_int($itemsPerPage)) {
+        echo json_encode(['success' => false, 'message' => 'Invalid pagination values']);
+        exit;
     }
 
+    // Initialize base query and parameters
+    $query = "SELECT * FROM medicines";
+    $params = [];
 
+    // Add search conditions
+    if (!empty($search)) {
+        $query .= " WHERE medicinename LIKE :search OR medicinecategory LIKE :search";
+        $params[':search'] = '%' . $search . '%'; // Bind search parameter
+    }
+
+    // Add pagination (directly insert LIMIT values)
+    $query .= " LIMIT $offset, $itemsPerPage";
+
+    try {
+        // Fetch paginated medicines
+        $stmt = $pdo->prepare($query);
+        $stmt->execute($params);
+        $medicines = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Get total items for pagination
+        $totalQuery = "SELECT COUNT(*) AS total FROM medicines";
+        $totalParams = [];
+        if (!empty($search)) {
+            $totalQuery .= " WHERE medicinename LIKE :search OR medicinecategory LIKE :search";
+            $totalParams[':search'] = '%' . $search . '%';
+        }
+        $totalStmt = $pdo->prepare($totalQuery);
+        $totalStmt->execute($totalParams);
+        $totalItems = $totalStmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+        // Send JSON response
+        echo json_encode([
+            'success' => true,
+            'medicines' => $medicines,
+            'current_page' => $page,
+            'items_per_page' => $itemsPerPage,
+            'total_items' => $totalItems,
+        ]);
+    } catch (PDOException $e) {
+        // Handle errors
+        echo json_encode([
+            'success' => false,
+            'message' => $e->getMessage(),
+        ]);
+    }
 
 } else if ($method === 'DELETE' && $service === 'deleteMedicine') {
     $id = $form_data['id'];
@@ -207,7 +217,7 @@ if ($method === 'POST' && $service === 'addMedicine') {
                     echo json_encode(['success' => false, 'message' => 'Something happened at activity insertion', $user]);
                     return;
                 }
-                echo json_encode(['success' => true, 'message' => 'Updated',$form_data, $profit]);
+                echo json_encode(['success' => true, 'message' => 'Updated', $form_data, $profit]);
                 return;
             } else {
                 echo json_encode(['success' => false, 'message' => 'Something happened']);

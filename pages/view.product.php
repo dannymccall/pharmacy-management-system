@@ -13,7 +13,7 @@ include '../includes/header.php'
 include '../includes/header__rest.php';
 ?>
 <style>
-    
+
 </style>
 <div class="container">
     <div class="section">
@@ -34,6 +34,13 @@ include '../includes/header__rest.php';
                         </div>
 
                     </div>
+                    <div class="search-container">
+                        <input type="text" id="searchQuery" class="search-input" placeholder="Search Medicines">
+                        <button id="searchBtn" class="search-button">
+                            <img src="../assets/images/search-product.png" style="width:20px; height:20px;"  alt=""> <!-- Font Awesome Search Icon -->
+                        </button>
+                    </div>
+
                     <a href="../pages/add-product.php" class="add__new__unit">
                         Add new product
                     </a>
@@ -68,11 +75,9 @@ include '../includes/header__rest.php';
                             </tbody>
                         </table>
                         <div class="pagination">
-                            <button id="prevBtn" 
-                                style="width: 3rem; height: 30px; font-size: 0.6em; ">PREV</button>
+                            <button id="prevBtn" style="width: 3rem; height: 30px; font-size: 0.6em; ">PREV</button>
                             <span id="currentPage"></span>
-                            <button id="nextBtn"
-                                style="width: 3rem; height: 30px; font-size: 0.6em; ">NEXT</button>
+                            <button id="nextBtn" style="width: 3rem; height: 30px; font-size: 0.6em; ">NEXT</button>
                         </div>
                     </div>
 
@@ -82,7 +87,7 @@ include '../includes/header__rest.php';
         </div>
     </div>
     <div class="modal">
-        <div class="form" style="width: 70%; height:80%;">
+        <div class="form" style="width: 70%; height:81%;">
             <h1>Edit Medicine</h1>
             <p class="error" style="text-align:center; margin: 5px auto;"></p>
             <form action="" id="medicineForm" class="form-flex">
